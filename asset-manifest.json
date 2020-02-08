@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/toMySister/static/css/main.b08bcd6c.chunk.css",
+    "main.js": "/toMySister/static/js/main.d93e4ceb.chunk.js",
+    "main.js.map": "/toMySister/static/js/main.d93e4ceb.chunk.js.map",
+    "runtime-main.js": "/toMySister/static/js/runtime-main.1e85ef24.js",
+    "runtime-main.js.map": "/toMySister/static/js/runtime-main.1e85ef24.js.map",
+    "static/js/2.e0c39d1e.chunk.js": "/toMySister/static/js/2.e0c39d1e.chunk.js",
+    "static/js/2.e0c39d1e.chunk.js.map": "/toMySister/static/js/2.e0c39d1e.chunk.js.map",
+    "index.html": "/toMySister/index.html",
+    "precache-manifest.4797e8c0093ecf820a873ef6fdd7fee5.js": "/toMySister/precache-manifest.4797e8c0093ecf820a873ef6fdd7fee5.js",
+    "service-worker.js": "/toMySister/service-worker.js",
+    "static/css/main.b08bcd6c.chunk.css.map": "/toMySister/static/css/main.b08bcd6c.chunk.css.map",
+    "static/js/2.e0c39d1e.chunk.js.LICENSE.txt": "/toMySister/static/js/2.e0c39d1e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1e85ef24.js",
+    "static/js/2.e0c39d1e.chunk.js",
+    "static/css/main.b08bcd6c.chunk.css",
+    "static/js/main.d93e4ceb.chunk.js"
+  ]
+}
