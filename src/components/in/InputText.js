@@ -4,26 +4,29 @@ import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // "& .MuiTextField-root": {
     margin: `${theme.spacing(1)}px 0`,
     width: "100%"
-    // }
   }
 }));
 
-export default function InputText({ name, onChanged, defaultValue }) {
+export default function InputText({
+  defautRows = 4,
+  name,
+  onChanged,
+  defaultValue
+}) {
   const classes = useStyles();
 
   const handleOnChange = event => {
-      onChanged({ [name]: event.target.value  });
+    onChanged({ [name]: event.target.value });
   };
 
   return (
     <TextField
       className={classes.root}
-      label={name.replace("_", " ").toUpperCase()}
+      label={name ? name.replace("_", " ").toUpperCase() : undefined}
       multiline
-      rows="4"
+      rows={defautRows}
       variant="outlined"
       name={name}
       defaultValue={defaultValue}

@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    fontSize: "10pt",
     margin: "20px 0 20px 0",
     textAlign: "left"
   }

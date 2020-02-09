@@ -6,7 +6,9 @@ const useStyle = makeStyles({
   root: {
     minWidth: "unset",
     width: "100%",
-    height: "100%"
+    height: "100%",
+    // color: "#f0f0f0"
+    color:  "black"
   }
 });
 
@@ -16,7 +18,7 @@ export default function RunButton({ onClick }) {
     <Button
       className={classes.root}
       variant="contained"
-      color="primary"
+      // color="primary"
       onClick={onClick}
     >
       >>

@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import Button from "@material-ui/core/Button";
 
 function clickButton(e) {
   e.preventDefault();
@@ -6,6 +7,10 @@ function clickButton(e) {
 }
 
 function copyToClip(str) {
+  if (!str) {
+    alert("empty data!");
+    return;
+  }
   function listener(e) {
     e.clipboardData.setData("text/html", str.innerHTML);
     e.clipboardData.setData("text/plain", str.innerHTML);
@@ -21,11 +26,10 @@ function copyToClip(str) {
   document.removeEventListener("copy", listener);
 }
 
-
-export default function CopyButton(){
-
-
-  return <Button>
-
-  </Button>
+export default function CopyButton() {
+  return (
+    <Button onClick={clickButton} variant="outlined">
+      COPY
+    </Button>
+  );
 }

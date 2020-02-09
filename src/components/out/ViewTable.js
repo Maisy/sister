@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -46,7 +46,7 @@ export default function ViewTable({ columns = "", data = "" }) {
               {row.split(",").map((columnItem, idx) => {
                 return (
                   <td className={classes.td} key={columnItem + "" + idx}>
-                    {columnItem + ""}
+                    {columnItem ? columnItem.trim() : ""}
                   </td>
                 );
               })}
