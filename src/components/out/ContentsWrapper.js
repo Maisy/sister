@@ -2,6 +2,8 @@ import React from "react";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ViewSet from "./ViewSet";
+import CopyButton from "./CopyButton";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -10,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
     margin: 5,
-    textAlign: "center",
+    textAlign: "right",
     color: "black",
     fontSize: "10pt",
     fontFamily: "맑은 고딕"
@@ -26,7 +28,8 @@ export default function ViewContents({ dataList }) {
     dataList.map((data, idx) => {
       return data ? (
         <Paper className={classes.paper} key={idx}>
-          <ViewSet inputData={data}></ViewSet>
+          <CopyButton targetId={`contents${idx+1}`}></CopyButton>
+          <ViewSet id={`contents${idx+1}`} inputData={data}></ViewSet>
         </Paper>
       ) : (
         ""

@@ -1,9 +1,9 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const styles = {
   table: {
-    width: "100%",
+    margin: "20px 0",
+    width: "80%",
     fontSize: "10pt",
     borderBottom: "2px solid #444444",
     borderCollapse: "collapse"
@@ -21,18 +21,16 @@ const useStyles = makeStyles(theme => ({
     padding: "5px 10px",
     textAlign: "left"
   }
-}));
+};
 
 export default function ViewTable({ columns = "", data = "" }) {
-  const classes = useStyles();
-
   return columns && data ? (
-    <table className={classes.table}>
+    <table style={styles.table}>
       <thead>
         <tr>
           {columns.split(",").map((columnName, idx) => {
             return (
-              <th className={classes.th} key={idx}>
+              <th style={styles.th} key={idx}>
                 {columnName}
               </th>
             );
@@ -45,7 +43,7 @@ export default function ViewTable({ columns = "", data = "" }) {
             <tr key={row + "" + idx}>
               {row.split(",").map((columnItem, idx) => {
                 return (
-                  <td className={classes.td} key={columnItem + "" + idx}>
+                  <td style={styles.td} key={columnItem + "" + idx}>
                     {columnItem ? columnItem.trim() : ""}
                   </td>
                 );

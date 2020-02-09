@@ -1,9 +1,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 
-function clickButton(e) {
+function clickButton(e, targetId) {
   e.preventDefault();
-  copyToClip(document.getElementById("contents"));
+  console.log(targetId)
+  copyToClip(document.getElementById(targetId));
 }
 
 function copyToClip(str) {
@@ -26,9 +27,9 @@ function copyToClip(str) {
   document.removeEventListener("copy", listener);
 }
 
-export default function CopyButton() {
+export default function CopyButton({ targetId }) {
   return (
-    <Button onClick={clickButton} variant="outlined">
+    <Button onClick={e => clickButton(e, targetId)} variant="outlined">
       COPY
     </Button>
   );

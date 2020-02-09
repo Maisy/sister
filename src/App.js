@@ -73,7 +73,6 @@ function App() {
         </Grid>
         <Grid item xs={12} sm={12} md={1}>
           <RunButton onClick={onRun}></RunButton>
-          {/* <CopyButton></CopyButton> */}
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <ViewContents dataList={viewData}></ViewContents>
