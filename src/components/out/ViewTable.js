@@ -20,10 +20,9 @@ const styles = {
     padding: "5px 10px",
     textAlign: "center"
   },
-  // first: {
-  //   backgroundColor: "#e6e6e6",
-  //   textAlign: "left"
-  // },
+  first: {
+    textAlign: "left"
+  },
   emphasis: {
     color: "red",
     fontWeight: "bold"
@@ -55,7 +54,7 @@ export default function ViewTable({ columns = "", data = "" }) {
               {row.split(",").map((columnItem, idx, arr) => {
                 const tdStyle = (index => {
                   if (index === 0) {
-                    return { ...styles.th };
+                    return { ...styles.th, ...styles.first };
                   } else if (arr.length === index + 1)
                     return { ...styles.td, ...styles.emphasis };
                   else {

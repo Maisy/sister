@@ -4,11 +4,14 @@ import { Tabs, Tab } from "@material-ui/core";
 import TabPanel from "./TabPanel";
 import Template from "./Template";
 import Source from "./Source";
+import UserEmails from "./UserEmails";
+import EquipInfos from "./EquipInfos";
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  }
+  },
+  tab: {}
 }));
 
 function a11yProps(index) {
@@ -33,14 +36,28 @@ export default function InputPages({ onChanged, defaultValue }) {
         onChange={handleChange}
         aria-label="simple tabs example"
       >
-        <Tab label="Source Data" {...a11yProps(0)} />
-        <Tab label="Template" {...a11yProps(1)} />
+        {/* <Tab label="Email" className={classes.tab} {...a11yProps(0)} />
+        <Tab label="Equipment" className={classes.tab} {...a11yProps(1)} /> */}
+        <Tab label="Template" className={classes.tab} {...a11yProps(0)} />
+        <Tab label="Source Data" className={classes.tab} {...a11yProps(1)} />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        <Source onChanged={onChanged} defaultValue={defaultValue}></Source>
+      {/* <TabPanel value={value} index={0}>
+        <UserEmails
+          onChanged={onChanged}
+          defaultValue={defaultValue}
+        ></UserEmails>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <EquipInfos
+          onChanged={onChanged}
+          defaultValue={defaultValue}
+        ></EquipInfos>
+      </TabPanel> */}
+      <TabPanel value={value} index={0}>
         <Template onChanged={onChanged} defaultValue={defaultValue}></Template>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Source onChanged={onChanged} defaultValue={defaultValue}></Source>
       </TabPanel>
     </div>
   );

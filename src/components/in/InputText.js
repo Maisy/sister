@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
 export default function InputText({
   defautRows = 4,
   name,
+  label,
   onChanged,
   defaultValue
 }) {
@@ -24,7 +25,7 @@ export default function InputText({
   return (
     <TextField
       className={classes.root}
-      label={name ? name.replace("_", " ").toUpperCase() : undefined}
+      label={label ? label: name.replace("_", " ").toUpperCase()}
       multiline
       rows={defautRows}
       variant="outlined"

@@ -10,10 +10,19 @@ export default function Template({ onChanged, defaultValue }) {
         onChanged={onChanged}
       ></InputText>
       <InputText
-        name="table_columns"
-        defaultValue={defaultValue["table_columns"]}
+        name="table_columns_label"
+        label="Column Name"
+        defautRows={1}
+        defaultValue={defaultValue["table_columns_label"]}
         onChanged={onChanged}
       ></InputText>
+      {/* <InputText
+        name="table_columns_hide"
+        label="Hide Column Name"
+        defautRows={1}
+        defaultValue={defaultValue["table_columns_hide"]}
+        onChanged={onChanged}
+      ></InputText> */}
       <InputText
         name="post_text"
         defaultValue={defaultValue["post_text"]}
