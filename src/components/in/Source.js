@@ -5,7 +5,7 @@ export default function SourceInput({ defaultValue, onChanged }) {
   return (
     <div>
       <InputText
-        name="variables"
+        name="source_variables"
         defautRows={1}
         defaultValue={defaultValue["source_variables"]}
         onChanged={onChanged}

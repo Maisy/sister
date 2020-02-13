@@ -8,8 +8,6 @@ import Source from "./Source";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-    // border:
-    // backgroundColor: theme.palette.background.paper,
   }
 }));
 
@@ -25,7 +23,6 @@ export default function InputPages({ onChanged, defaultValue }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setValue(newValue);
   };
 

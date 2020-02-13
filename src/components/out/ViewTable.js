@@ -3,23 +3,30 @@ import React from "react";
 const styles = {
   table: {
     margin: "20px 0",
-    width: "80%",
+    width: "350px",
     fontSize: "10pt",
-    borderBottom: "2px solid #444444",
+    border: "1px solid black",
     borderCollapse: "collapse"
   },
   th: {
     backgroundColor: "#e6e6e6",
-    borderTop: "2px solid #444444",
-    borderBottom: "2px solid #444444",
+    border: "1px solid #444444",
     padding: "5px 10px",
     textAlign: "center",
     fontWeight: "bold"
   },
   td: {
-    borderBottom: "1px solid #444444",
+    border: "1px solid #444444",
     padding: "5px 10px",
-    textAlign: "left"
+    textAlign: "center"
+  },
+  // first: {
+  //   backgroundColor: "#e6e6e6",
+  //   textAlign: "left"
+  // },
+  emphasis: {
+    color: "red",
+    fontWeight: "bold"
   }
 };
 
@@ -28,9 +35,13 @@ export default function ViewTable({ columns = "", data = "" }) {
     <table style={styles.table}>
       <thead>
         <tr>
-          {columns.split(",").map((columnName, idx) => {
+          {columns.split(",").map((columnName, idx, arr) => {
+            const thStyle =
+              arr.length === idx + 1
+                ? { ...styles.th, ...styles.emphasis }
+                : styles.th;
             return (
-              <th style={styles.th} key={idx}>
+              <th style={thStyle} key={idx}>
                 {columnName}
               </th>
             );
@@ -41,9 +52,18 @@ export default function ViewTable({ columns = "", data = "" }) {
         {data.split("\n").map((row, idx) => {
           return row ? (
             <tr key={row + "" + idx}>
-              {row.split(",").map((columnItem, idx) => {
+              {row.split(",").map((columnItem, idx, arr) => {
+                const tdStyle = (index => {
+                  if (index === 0) {
+                    return { ...styles.th };
+                  } else if (arr.length === index + 1)
+                    return { ...styles.td, ...styles.emphasis };
+                  else {
+                    return styles.td;
+                  }
+                })(idx);
                 return (
-                  <td style={styles.td} key={columnItem + "" + idx}>
+                  <td style={tdStyle} key={columnItem + "" + idx}>
                     {columnItem ? columnItem.trim() : ""}
                   </td>
                 );
