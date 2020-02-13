@@ -11,13 +11,14 @@ export default function SourceInput({ defaultValue, onChanged }) {
         onChanged={onChanged}
       ></InputText>
       <InputText
+        name="source_data"
         defautRows={6}
         defaultValue={defaultValue["source_data"]}
         onChanged={onChanged}
       ></InputText>
       <InputText
-        defautRows={10}
         name="table_data"
+        defautRows={10}
         defaultValue={defaultValue["table_data"]}
         onChanged={onChanged}
       ></InputText>
