@@ -19,7 +19,8 @@ export default function InputText({
   const classes = useStyles();
 
   const handleOnChange = event => {
-    onChanged({ [name]: event.target.value });
+    // onChanged({ [name]: event.target.value });
+    onChanged(event.target.value)
   };
 
   return (

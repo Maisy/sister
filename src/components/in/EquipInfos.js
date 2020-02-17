@@ -1,21 +1,51 @@
 import React from "react";
+import { connect } from "react-redux";
 import InputText from "./InputText";
+import { makeStyles } from "@material-ui/core";
+import {
+  setEquipmentInfos,
+  setEquipmentColumns
+} from "../../store/modules/static";
 
-export default function EquipInfos({ defaultValue, onChanged }) {
+const useStyles = makeStyles({
+  root: {
+    width: "100%"
+  }
+});
+
+function EquipInfos({
+  defaultData,
+  defaultColumns,
+  onColumnChange,
+  onDataChange
+}) {
+  const classes = useStyles();
+
   return (
-    <div>
+    <div className={classes.root}>
       <InputText
         name="equip_info_columns"
         defautRows={1}
-        defaultValue={defaultValue["equip_info_columns"]}
-        onChanged={onChanged}
+        defaultValue={defaultColumns}
+        onChanged={onColumnChange}
       ></InputText>
       <InputText
         name="equip_info_data"
-        defautRows={20}
-        defaultValue={defaultValue["equip_info_data"]}
-        onChanged={onChanged}
+        defautRows={10}
+        defaultValue={defaultData}
+        onChanged={onDataChange}
       ></InputText>
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  defaultData: state.static.equipInfos,
+  defaultColumns: state.static.equipColumns
+});
+const mapDispatchToProps = dispatch => ({
+  onColumnChange: value => dispatch(setEquipmentColumns(value)),
+  onDataChange: value => dispatch(setEquipmentInfos(value))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EquipInfos);

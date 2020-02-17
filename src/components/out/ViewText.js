@@ -26,7 +26,6 @@ export default function ViewText(props) {
   return (
     <div className={classes.root}>
       {splitTextNewLine(data)}
-      {/* {typeof data === "string" ? data : "empty"} */}
     </div>
   );
 }

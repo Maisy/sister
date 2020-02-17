@@ -1,15 +1,25 @@
 import React from "react";
 import InputText from "./InputText";
+import { connect } from "react-redux";
+import {setUserEmails} from "../../store/modules/static"
 
-export default function UserEmails({ defaultValue, onChanged }) {
+function UserEmails({ userEmails, setUserEmails }) {
   return (
-    <div>
-      <InputText
-        name="email"
-        defautRows={20}
-        defaultValue={defaultValue["email"]}
-        onChanged={onChanged}
-      ></InputText>
-    </div>
+    <InputText
+      name="email"
+      defautRows={10}
+      defaultValue={userEmails}
+      onChanged={setUserEmails}
+    ></InputText>
   );
 }
+
+const mapStateToProps = state => ({
+  userEmails: state.static.userEmails
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUserEmails: value => dispatch(setUserEmails(value)) 
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserEmails);

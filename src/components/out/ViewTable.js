@@ -4,6 +4,7 @@ const styles = {
   table: {
     margin: "20px 0",
     width: "350px",
+    height: 200,
     fontSize: "10pt",
     border: "1px solid black",
     borderCollapse: "collapse"
@@ -12,12 +13,14 @@ const styles = {
     backgroundColor: "#e6e6e6",
     border: "1px solid #444444",
     padding: "5px 10px",
+    // padding: 0,
     textAlign: "center",
     fontWeight: "bold"
   },
   td: {
     border: "1px solid #444444",
     padding: "5px 10px",
+    // padding: 0,
     textAlign: "center"
   },
   first: {
@@ -29,12 +32,17 @@ const styles = {
   }
 };
 
-export default function ViewTable({ columns = "", data = "" }) {
-  return columns && data ? (
+export default function ViewTable({
+  columnsLabel = [],
+  rowsLabel = [],
+  data = ""
+}) {
+  const hasStaticRowsLabel = rowsLabel.length > 0;
+  return columnsLabel && data ? (
     <table style={styles.table}>
       <thead>
         <tr>
-          {columns.split(",").map((columnName, idx, arr) => {
+          {columnsLabel.map((columnName, idx, arr) => {
             const thStyle =
               arr.length === idx + 1
                 ? { ...styles.th, ...styles.emphasis }
@@ -48,24 +56,28 @@ export default function ViewTable({ columns = "", data = "" }) {
         </tr>
       </thead>
       <tbody>
-        {data.split("\n").map((row, idx) => {
+        {data.split("\n").map((row, rowIdx) => {
           return row ? (
-            <tr key={row + "" + idx}>
-              {row.split(",").map((columnItem, idx, arr) => {
+            <tr key={row + "" + rowIdx}>
+              {hasStaticRowsLabel && (
+                <td style={styles.th} key={rowsLabel + "" + rowIdx}>
+                  {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ""}
+                </td>
+              )}
+              {row.split(",").map((columnItem, colIdx, arr) => {
                 const tdStyle = (index => {
-                  if (index === 0) {
-                    return { ...styles.th, ...styles.first };
-                  } else if (arr.length === index + 1)
+                  if (arr.length === index + 1)
                     return { ...styles.td, ...styles.emphasis };
                   else {
                     return styles.td;
                   }
-                })(idx);
+                })(colIdx);
                 return (
-                  <td style={tdStyle} key={columnItem + "" + idx}>
+                  <td style={tdStyle} key={columnItem + "" + colIdx}>
                     {columnItem ? columnItem.trim() : ""}
                   </td>
                 );
+                // }
               })}
             </tr>
           ) : (
