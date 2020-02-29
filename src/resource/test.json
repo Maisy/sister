@@ -1,0 +1,21 @@
+{
+  "email": "mk1, inputdata@hello.word\nmk2, 점심이멜@hello.word\nmk3, 저녁이멜@hello.word\nmj, kkk@aaa.bbb",
+
+  "equip_info_columns": "equip_name, 아침, 점심, 저녁",
+
+  "equip_info_data": "AA, mk1, mk2, mk3\nBB, mj, mjjjj, mjjjjjjjjj\nCC, kakao, akao, bkao",
+
+  "pre_text": "Hello\nMy name is __equip_name__\n이건 맑은고딕일까요 아닐까요\n내생일은 __birthday__ 입니다. 내 닉네임은 __nickname__ 입니다.",
+
+  "table_columns_label": "장치, 담당, married, age, rest",
+
+  "table_columns_hide": "장치",
+
+  "post_text": "Thanks. my phone number is __phone__.",
+
+  "source_variables": "equip_name, owner, birthday, nickname, phone",
+
+  "source_data": "AA, maisy, 910105, mk, 010111222\nBB, jinmin, 111111, mj, 1234567777\nCC, dalkomm, 222222, coffee, 89898989",
+
+  "table_data": "AA, 아침담당자, true, 50, 1\nAA, 점심담당자, false, 14,0\nAA, 저녁담당자, false, 14,33\n\nBB, icecream, baskin, rabins,cdd\nBB, dunkin, donuts, strawberry,55\nBB, dam, sosagol, sundae,52\nBB, egg, drop, hungry,66\n\nCC, second1, false, 1,111\nCC, second2, false, 10,bbb"
+}
