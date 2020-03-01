@@ -48,7 +48,12 @@ const initialState = {
   //data
   variables: Sample.source_variables,
   textData: Sample.source_data,
-  tableData: Sample.table_data,
+  // tableData: Sample.table_data,
+  tableData: [
+    Sample.table_data_week1,
+    Sample.table_data_week2,
+    Sample.table_data_week3,
+  ],
 
   //result
   result: [],
@@ -93,23 +98,19 @@ export default handleActions(
       produce(state, draft => {
         draft.textData = action.payload;
       }),
-    [SET_TABLE_DATA]: (state, action) =>
-      produce(state, draft => {
-        draft.tableData = action.payload;
-      }),
+    [SET_TABLE_DATA]: (state, action) => {
+      const { idx, data } = action.payload;
+      return produce(state, draft => {
+        draft.tableData[idx] = data;
+      });
+    },
     [SET_TABLE_COLUMNS]: (state, action) =>
       produce(state, draft => {
-        draft.table = {
-          ...draft.table,
-          columnsLabel: action.payload.split(','),
-        };
+        draft.table.columnsLabel = action.payload.split(',');
       }),
     [SET_TABLE_ROWS]: (state, action) =>
       produce(state, draft => {
-        draft.table = {
-          ...draft.table,
-          rowsLabel: action.payload ? action.payload.split(',') : [],
-        };
+        draft.table.rowsLabel = action.payload ? action.payload.split(',') : [];
       }),
 
     [IMPORT_CONTENTS_DATA]: (state, action) => {
@@ -125,7 +126,11 @@ export default handleActions(
         };
         draft.variables = data.source_variables;
         draft.textData = data.source_data;
-        draft.tableData = data.table_data;
+        draft.tableData = [
+          data.table_data_week1,
+          data.table_data_week2,
+          data.table_data_week3,
+        ];
       });
     },
     [EXPORT_CONTENTS_DATA]: (state, action) =>
@@ -137,7 +142,9 @@ export default handleActions(
           table_rows_label: draft.table.rowsLabel.join(','),
           source_variables: draft.variables,
           source_data: draft.textData,
-          table_data: draft.tableData,
+          table_data_week1: draft.tableData[0],
+          table_data_week2: draft.tableData[1],
+          table_data_week3: draft.tableData[2],
         };
       }),
 
@@ -147,25 +154,52 @@ export default handleActions(
         postTextSchema,
         variables = '',
         textData = '',
-        tableData = '',
+        tableData = [],
         table,
       } = state;
       const variablieList = variables.split(',');
       const textDataList = textData.split('\n');
-      const tableDataList = tableData.split('\n\n');
+      const tableDataPerKey = [];
+
+      tableData.forEach((week, weekIdx) => {
+        const weekKey = 'week' + (weekIdx + 1);
+        const rows = week.split('\n');
+
+        const rowKeyList = rows[0].split(',');
+        rows.forEach((row, rowIdx) => {
+          row.split(',').forEach((col, colIdx) => {
+            const rowKey = rowKeyList[colIdx].trim();
+            if (rowIdx === 0) {
+              if (!tableDataPerKey[rowKey]) {
+                tableDataPerKey[rowKey] = {};
+              }
+              tableDataPerKey[rowKey][weekKey] = [];
+            } else {
+              tableDataPerKey[rowKey][weekKey].push(col);
+            }
+          });
+        });
+      });
+
+      // console.log(tableDataPerKey);
+
       const getEmailId = (dataRow = '') => {
         return dataRow.split(',')[0];
       };
 
       return produce(state, draft => {
-        draft.result = textDataList.map((data, idx) => ({
-          emailId: getEmailId(data),
-          tableColumnsLabel: table.columnsLabel,
-          tableRowsLabel: table.rowsLabel,
-          preText: parseText(preTextSchema, variablieList, data),
-          postText: parseText(postTextSchema, variablieList, data),
-          tableData: tableDataList[idx],
-        }));
+        draft.result = textDataList.map((data, idx) => {
+          const mailKey = textDataList[idx].split(',')[0];
+          // console.log(tableDataPerKey[mailKey]);
+          return {
+            emailId: getEmailId(data),
+            tableColumnsLabel: table.columnsLabel,
+            tableRowsLabel: table.rowsLabel,
+            preText: parseText(preTextSchema, variablieList, data),
+            postText: parseText(postTextSchema, variablieList, data),
+            tableData: tableDataPerKey[mailKey],
+          };
+        });
       });
     },
   },

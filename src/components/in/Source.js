@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputText from './InputText';
 import { ContentsActions } from '../../store/modules/contents';
+import TableData from './TableData';
 
 function SourceInput() {
   const dispatch = useDispatch();
@@ -15,9 +16,6 @@ function SourceInput() {
 
   const setTextData = data => {
     dispatch(ContentsActions.setTextData(data));
-  };
-  const setTableData = data => {
-    dispatch(ContentsActions.setTableData(data));
   };
 
   return (
@@ -34,12 +32,7 @@ function SourceInput() {
         value={textData}
         onChanged={setTextData}
       ></InputText>
-      <InputText
-        name="table_data"
-        defautRows={10}
-        value={tableData}
-        onChanged={setTableData}
-      ></InputText>
+      <TableData></TableData>
     </div>
   );
 }

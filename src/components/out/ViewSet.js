@@ -1,13 +1,23 @@
-import React from "react";
-import ViewTable from "./ViewTable";
-import ViewText from "./ViewText";
+import React from 'react';
+import ViewText from './ViewText';
+import PivotTable from './PivotTable';
 
 export default function ViewSet({ id, inputData }) {
-  const { preText, tableColumnsLabel, tableRowsLabel, tableData, postText } = inputData;
+  const {
+    preText,
+    tableColumnsLabel,
+    tableRowsLabel,
+    tableData,
+    postText,
+  } = inputData;
   return (
     <div id={id}>
       <ViewText data={preText}></ViewText>
-      <ViewTable columnsLabel={tableColumnsLabel} rowsLabel={tableRowsLabel} data={tableData}></ViewTable>
+      <PivotTable
+        columnsLabel={tableColumnsLabel}
+        rowsLabel={tableRowsLabel}
+        dataObjList={tableData}
+      ></PivotTable>
       <ViewText data={postText}></ViewText>
     </div>
   );
