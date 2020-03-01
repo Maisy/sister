@@ -161,21 +161,31 @@ export default handleActions(
       const textDataList = textData.split('\n');
       const tableDataPerKey = [];
 
-      tableData.forEach((week, weekIdx) => {
+      const shouldSendMailMap = {};
+      tableData.forEach((week, weekIdx, arr) => {
         const weekKey = 'week' + (weekIdx + 1);
         const rows = week.split('\n');
 
         const rowKeyList = rows[0].split(',');
         rows.forEach((row, rowIdx) => {
           row.split(',').forEach((col, colIdx) => {
-            const rowKey = rowKeyList[colIdx].trim();
+            const rowKey = rowKeyList[colIdx].trim(); //장비명
             if (rowIdx === 0) {
               if (!tableDataPerKey[rowKey]) {
                 tableDataPerKey[rowKey] = {};
+                shouldSendMailMap[rowKey] = false;
               }
               tableDataPerKey[rowKey][weekKey] = [];
             } else {
               tableDataPerKey[rowKey][weekKey].push(col);
+              if (
+                weekIdx === arr.length - 1 &&
+                col !== 0 &&
+                !shouldSendMailMap[rowKey]
+              ) {
+                //마지막 값이 모두 0인경우 disable
+                shouldSendMailMap[rowKey] = true;
+              }
             }
           });
         });
@@ -192,6 +202,7 @@ export default handleActions(
           const mailKey = textDataList[idx].split(',')[0];
           // console.log(tableDataPerKey[mailKey]);
           return {
+            shouldSend: shouldSendMailMap[mailKey] || false,
             emailId: getEmailId(data),
             tableColumnsLabel: table.columnsLabel,
             tableRowsLabel: table.rowsLabel,
