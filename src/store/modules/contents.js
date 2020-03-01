@@ -81,34 +81,34 @@ export default handleActions(
       }),
     [SET_POST_TEXT]: (state, action) =>
       produce(state, draft => {
-        draft.postTextSchema = action.text;
+        draft.postTextSchema = action.payload;
       }),
     [SET_VARIABLES]: (state, action) =>
       produce(state, draft => {
-        draft.variables = action.variables;
+        draft.variables = action.payload;
       }),
 
     //data
     [SET_TEXT_DATA]: (state, action) =>
       produce(state, draft => {
-        draft.textData = action.text;
+        draft.textData = action.payload;
       }),
     [SET_TABLE_DATA]: (state, action) =>
       produce(state, draft => {
-        draft.tableData = action.data;
+        draft.tableData = action.payload;
       }),
     [SET_TABLE_COLUMNS]: (state, action) =>
       produce(state, draft => {
         draft.table = {
           ...draft.table,
-          columnsLabel: action.text.split(','),
+          columnsLabel: action.payload.split(','),
         };
       }),
     [SET_TABLE_ROWS]: (state, action) =>
       produce(state, draft => {
         draft.table = {
           ...draft.table,
-          rowsLabel: action.text ? action.text.split(',') : [],
+          rowsLabel: action.payload ? action.payload.split(',') : [],
         };
       }),
 

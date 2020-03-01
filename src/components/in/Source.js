@@ -1,45 +1,47 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import InputText from './InputText'
-import { ContentsActions } from '../../store/modules/contents'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import InputText from './InputText';
+import { ContentsActions } from '../../store/modules/contents';
 
-function SourceInput({ variables, textData, tableData, ContentsActions }) {
+function SourceInput() {
+  const dispatch = useDispatch();
+  const { variables, textData, tableData } = useSelector(
+    state => state.contents
+  );
+
+  const setVariables = data => {
+    dispatch(ContentsActions.setVariables(data));
+  };
+
+  const setTextData = data => {
+    dispatch(ContentsActions.setTextData(data));
+  };
+  const setTableData = data => {
+    dispatch(ContentsActions.setTableData(data));
+  };
+
   return (
     <div>
       <InputText
         name="source_variables"
         defautRows={1}
         value={variables}
-        onChanged={ContentsActions.setVariables}
+        onChanged={setVariables}
       ></InputText>
       <InputText
         name="source_data"
         defautRows={6}
         value={textData}
-        onChanged={ContentsActions.setTextData}
+        onChanged={setTextData}
       ></InputText>
       <InputText
         name="table_data"
         defautRows={10}
         value={tableData}
-        onChanged={ContentsActions.setTableData}
+        onChanged={setTableData}
       ></InputText>
     </div>
-  )
+  );
 }
 
-const mapStateToProps = ({ contents }) => {
-  const { variables, textData, tableData } = contents
-  return {
-    variables,
-    textData,
-    tableData,
-  }
-}
-
-const mapDispatchToProps = dispatch => ({
-  ContentsActions: bindActionCreators(ContentsActions, dispatch),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SourceInput)
+export default SourceInput;
