@@ -164,6 +164,9 @@ export default handleActions(
       const shouldSendMailMap = {};
       tableData.forEach((week, weekIdx, arr) => {
         const weekKey = 'week' + (weekIdx + 1);
+        if (!week) {
+          return;
+        }
         const rows = week.split('\n');
 
         const rowKeyList = rows[0].split(',');

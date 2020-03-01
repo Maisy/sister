@@ -1,10 +1,10 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Tabs, Tab } from '@material-ui/core'
-import TabPanel from './TabPanel'
-import Template from './Template'
-import Source from './Source'
-import StaticData from './StaticData'
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Tabs, Tab } from '@material-ui/core';
+import TabPanel from './TabPanel';
+import Template from './Template';
+import Source from './Source';
+import StaticData from './StaticData';
 // import UserEmails from "./UserEmails";
 // import EquipInfos from "./EquipInfos";
 
@@ -13,26 +13,27 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   tab: {},
-}))
+}));
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
-  }
+  };
 }
 
-export default function InputPages(){
-  const classes = useStyles()
-  const [tabIdx, setTabIdx] = React.useState(0)
+export default function InputPages() {
+  const classes = useStyles();
+  const [tabIdx, setTabIdx] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    setTabIdx(newValue)
-  }
+    setTabIdx(newValue);
+  };
 
   return (
     <div className={classes.root}>
       <Tabs
+        variant="fullWidth"
         value={tabIdx}
         onChange={handleChange}
         aria-label="simple tabs example"
@@ -51,5 +52,5 @@ export default function InputPages(){
         <Source></Source>
       </TabPanel>
     </div>
-  )
+  );
 }
