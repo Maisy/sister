@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const styles = {
   table: {
@@ -32,9 +33,18 @@ const styles = {
   },
 };
 
+const findRowIdx = (templateRowsLabel, dataRowsLabel) => {
+  return templateRowsLabel.map(name => dataRowsLabel.indexOf(name));
+};
 const pivot = (rowsLabel, origin) => {
   const result = [];
-  rowsLabel.forEach((rowName, keyIdx) => {
+  if (rowsLabel.length === 0) {
+    Object.keys(origin).forEach(dataKey => {
+      result.push(origin[dataKey]);
+    });
+    return result;
+  }
+  rowsLabel.forEach((rowNameIdx, keyIdx) => {
     result[keyIdx] = [];
     let keyNm = 'aa';
     for (let i = 0; i < 3; i++) {
@@ -45,22 +55,21 @@ const pivot = (rowsLabel, origin) => {
       } else {
         keyNm = 'week3';
       }
-      const data = origin[keyNm] ? origin[keyNm][keyIdx] : '0';
+      const data = origin[keyNm] ? origin[keyNm][rowNameIdx] : '0';
       result[keyIdx].push(data || '0');
     }
   });
-
   return result;
 };
 
-export default function PivotTable({
-  columnsLabel = [],
-  rowsLabel = [],
-  dataObjList = {},
-}) {
+export default function PivotTable({ tableData = {} }) {
+  const { table, tableDataRows } = useSelector(state => state.contents);
+  const { columnsLabel, rowsLabel = [] } = table;
+
   const hasStaticRowsLabel = rowsLabel.length > 0;
-  const pivotData = pivot(rowsLabel, dataObjList);
-  return columnsLabel && dataObjList ? (
+  const rowsMap = findRowIdx(rowsLabel, tableDataRows);
+  const pivotData = pivot(rowsMap, tableData);
+  return columnsLabel && tableData ? (
     <table style={styles.table}>
       <thead>
         <tr>

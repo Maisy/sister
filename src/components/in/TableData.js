@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContentsActions } from '../../store/modules/contents';
 import InputText from './InputText';
-import { Button, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -14,14 +14,25 @@ const useStyle = makeStyles(theme => ({
 export default function TableData() {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const { tableData } = useSelector(state => state.contents);
+  const { tableData, tableDataRows } = useSelector(state => state.contents);
 
   const setTableData = (idx, data) => {
     dispatch(ContentsActions.setTableData({ idx, data }));
   };
 
+  const setTableDataRows = data => {
+    dispatch(ContentsActions.setTableDataRows(data));
+  };
+
   return (
     <div className={classes.root}>
+      <InputText
+        name="table_data_rows"
+        label="Table Data Rows"
+        defautRows={1}
+        value={tableDataRows}
+        onChanged={data => setTableDataRows(data)}
+      ></InputText>
       <InputText
         name="table_data"
         label="WEEK 1"

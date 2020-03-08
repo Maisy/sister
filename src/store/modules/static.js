@@ -55,7 +55,7 @@ export default handleActions(
         draft.fileData = {
           email: draft.userEmails,
           equip_info_data: draft.equipInfos,
-          equip_info_columns: draft.equipColumns
+          equip_info_columns: draft.equipColumns,
         };
       }),
 

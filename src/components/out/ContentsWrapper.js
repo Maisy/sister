@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ViewSet from './ViewSet';
@@ -25,8 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ViewContents({ contentsData: dataList }) {
+function ViewContents() {
   const classes = useStyles();
+  const dataList = useSelector(store => store.contents.result);
+
   return (
     dataList &&
     dataList.map((data, idx) => {
@@ -49,10 +52,4 @@ function ViewContents({ contentsData: dataList }) {
   );
 }
 
-const mapStateToProps = state => ({
-  contentsData: state.contents.result,
-});
-
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ViewContents);
+export default ViewContents;

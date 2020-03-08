@@ -4,13 +4,13 @@ import InputContents from './in/ContentsWrapper';
 import ViewContents from './out/ContentsWrapper';
 import RunButton from './common/RunButton';
 import ExternalButtonGroup from './common/ExternalButtonGroup';
-import TestComponent from './TestComponent';
+// import TestComponent from './TestComponent';
 
 export default function Layout() {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} sm={12} md={5}>
-        <TestComponent />
+        {/* <TestComponent /> */}
         <ExternalButtonGroup></ExternalButtonGroup>
         <InputContents></InputContents>
       </Grid>

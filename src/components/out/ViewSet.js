@@ -5,8 +5,9 @@ import PivotTable from './PivotTable';
 export default function ViewSet({ id, inputData }) {
   const {
     preText,
-    tableColumnsLabel,
-    tableRowsLabel,
+    // tableColumnsLabel,
+    // tableRowsLabel,
+    // tableDataColumns,
     tableData,
     postText,
   } = inputData;
@@ -14,9 +15,10 @@ export default function ViewSet({ id, inputData }) {
     <div id={id}>
       <ViewText data={preText}></ViewText>
       <PivotTable
-        columnsLabel={tableColumnsLabel}
-        rowsLabel={tableRowsLabel}
-        dataObjList={tableData}
+        // columnsLabel={tableColumnsLabel}
+        // rowsLabel={tableRowsLabel}
+        // tableDataColumns={tableDataColumns}
+        tableData={tableData}
       ></PivotTable>
       <ViewText data={postText}></ViewText>
     </div>

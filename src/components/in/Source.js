@@ -6,9 +6,7 @@ import TableData from './TableData';
 
 function SourceInput() {
   const dispatch = useDispatch();
-  const { variables, textData, tableData } = useSelector(
-    state => state.contents
-  );
+  const { variables, textData } = useSelector(state => state.contents);
 
   const setVariables = data => {
     dispatch(ContentsActions.setVariables(data));
