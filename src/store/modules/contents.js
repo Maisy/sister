@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import produce from 'immer';
-import Sample from '../../resource/sample2';
+import Sample from '../../resource/sample';
 
 // 액션 타입 정의
 const SET_PRE_TEXT = 'template/SET_PRE_TEXT';
