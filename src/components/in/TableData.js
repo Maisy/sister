@@ -20,25 +20,32 @@ export default function TableData() {
     dispatch(ContentsActions.setTableData({ idx, data }));
   };
 
-  const setTableDataRows = data => {
-    dispatch(ContentsActions.setTableDataRows(data));
+  const setTableDataRows = (idx, data) => {
+    dispatch(ContentsActions.setTableDataRows({ idx, data }));
   };
 
   return (
     <div className={classes.root}>
       <InputText
-        name="table_data_rows"
-        label="Table Data Rows"
+        name="table_data_rows1"
+        label="Table Data Rows (WEEK 1)"
         defautRows={1}
-        value={tableDataRows}
-        onChanged={data => setTableDataRows(data)}
+        value={tableDataRows[0]}
+        onChanged={data => setTableDataRows(0, data)}
       ></InputText>
       <InputText
-        name="table_data"
+        name="table_data1"
         label="WEEK 1"
         defautRows={6}
         value={tableData[0]}
         onChanged={data => setTableData(0, data)}
+      ></InputText>
+      <InputText
+        name="table_data_rows2"
+        label="Table Data Rows (WEEK 2)"
+        defautRows={1}
+        value={tableDataRows[1]}
+        onChanged={data => setTableDataRows(1, data)}
       ></InputText>
       <InputText
         name="table_data2"
@@ -46,6 +53,13 @@ export default function TableData() {
         defautRows={6}
         value={tableData[1]}
         onChanged={data => setTableData(1, data)}
+      ></InputText>
+      <InputText
+        name="table_data_rows3"
+        label="Table Data Rows (WEEK 3)"
+        defautRows={1}
+        value={tableDataRows[2]}
+        onChanged={data => setTableDataRows(2, data)}
       ></InputText>
       <InputText
         name="table_data3"

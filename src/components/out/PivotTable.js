@@ -34,7 +34,9 @@ const styles = {
 };
 
 const findRowIdx = (templateRowsLabel, dataRowsLabel) => {
-  return templateRowsLabel.map(name => dataRowsLabel.indexOf(name));
+  return dataRowsLabel.map(oneWeekColumn =>
+    templateRowsLabel.map(row => oneWeekColumn.indexOf(row))
+  );
 };
 const pivot = (rowsLabel, origin) => {
   const result = [];
@@ -44,21 +46,27 @@ const pivot = (rowsLabel, origin) => {
     });
     return result;
   }
-  rowsLabel.forEach((rowNameIdx, keyIdx) => {
-    result[keyIdx] = [];
-    let keyNm = 'aa';
-    for (let i = 0; i < 3; i++) {
+
+  rowsLabel.forEach((oneWeekColumn, weekIdx) => {
+    const keyNm = (i => {
       if (i === 0) {
-        keyNm = 'week1';
+        return 'week1';
       } else if (i === 1) {
-        keyNm = 'week2';
+        return 'week2';
       } else {
-        keyNm = 'week3';
+        return 'week3';
       }
+    })(weekIdx);
+    oneWeekColumn.forEach((rowNameIdx, keyIdx) => {
+      if (weekIdx === 0) {
+        result[keyIdx] = [];
+      }
+
       const data = origin[keyNm] ? origin[keyNm][rowNameIdx] : '0';
       result[keyIdx].push(data || '0');
-    }
+    });
   });
+
   return result;
 };
 

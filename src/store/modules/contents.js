@@ -56,7 +56,11 @@ const initialState = {
   //data
   variables: Sample.source_variables,
   textData: Sample.source_data,
-  tableDataRows: splitWithTrim(Sample.table_data_rows),
+  tableDataRows: [
+    splitWithTrim(Sample.table_data_rows1),
+    splitWithTrim(Sample.table_data_rows2),
+    splitWithTrim(Sample.table_data_rows3),
+  ],
   tableData: [
     Sample.table_data_week1,
     Sample.table_data_week2,
@@ -120,10 +124,12 @@ export default handleActions(
         draft.tableData[idx] = data;
       });
     },
-    [SET_TABLE_DATA_ROWS]: (state, action) =>
-      produce(state, draft => {
-        draft.tableDataRows = splitWithTrim(action.payload);
-      }),
+    [SET_TABLE_DATA_ROWS]: (state, action) => {
+      const { idx, data } = action.payload;
+      return produce(state, draft => {
+        draft.tableDataRows[idx] = splitWithTrim(data);
+      });
+    },
 
     [IMPORT_CONTENTS_DATA]: (state, action) => {
       const data = action.payload;
@@ -136,6 +142,11 @@ export default handleActions(
         };
         draft.variables = data.source_variables;
         draft.textData = data.source_data;
+        draft.tableDataRows = [
+          data.table_data_rows1,
+          data.table_data_rows2,
+          data.table_data_rows3,
+        ];
         draft.tableData = [
           data.table_data_week1,
           data.table_data_week2,
@@ -152,6 +163,9 @@ export default handleActions(
           table_rows_label: draft.table.rowsLabel.join(','),
           source_variables: draft.variables,
           source_data: draft.textData,
+          table_data_rows1: draft.tableDataRows[0],
+          table_data_rows2: draft.tableDataRows[1],
+          table_data_rows3: draft.tableDataRows[2],
           table_data_week1: draft.tableData[0],
           table_data_week2: draft.tableData[1],
           table_data_week3: draft.tableData[2],
