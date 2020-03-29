@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tabs, Tab } from '@material-ui/core';
 import TabPanel from './TabPanel';
-import Template from './Template';
-import Source from './Source';
-import StaticData from './StaticData';
+import Template from '../../pages/template/Template';
+import Source from '../../pages/source/Source';
+import StaticData from '../../pages/email/StaticData';
 // import UserEmails from "./UserEmails";
 // import EquipInfos from "./EquipInfos";
 
@@ -22,9 +22,9 @@ function a11yProps(index) {
   };
 }
 
-export default function InputPages() {
+export default function InputPages(props) {
   const classes = useStyles();
-  const [tabIdx, setTabIdx] = React.useState(0);
+  const [tabIdx, setTabIdx] = React.useState(2);
 
   const handleChange = (event, newValue) => {
     setTabIdx(newValue);
@@ -46,10 +46,10 @@ export default function InputPages() {
         <StaticData></StaticData>
       </TabPanel>
       <TabPanel value={tabIdx} index={1}>
-        <Template></Template>
+        <Template {...props}></Template>
       </TabPanel>
       <TabPanel value={tabIdx} index={2}>
-        <Source></Source>
+        <Source {...props}></Source>
       </TabPanel>
     </div>
   );

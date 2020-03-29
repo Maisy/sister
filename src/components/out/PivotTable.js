@@ -34,8 +34,14 @@ const styles = {
 };
 
 const findRowIdx = (templateRowsLabel, dataRowsLabel) => {
+  if (!Array.isArray(dataRowsLabel)) {
+    console.warn(dataRowsLabel);
+    return templateRowsLabel;
+  }
+  // console.log(dataRowsLabel);
+  // console.log(splitWithTrim(dataRowsLabel));
   return dataRowsLabel.map(oneWeekColumn =>
-    templateRowsLabel.map(row => oneWeekColumn.indexOf(row))
+    templateRowsLabel.map(row => splitWithTrim(oneWeekColumn).indexOf(row))
   );
 };
 const pivot = (rowsLabel, origin) => {
@@ -57,6 +63,12 @@ const pivot = (rowsLabel, origin) => {
         return 'week3';
       }
     })(weekIdx);
+
+    if (!Array.isArray(oneWeekColumn)) {
+      // console.log(`oneWeekColumn`);
+      // console.log(oneWeekColumn);
+      return;
+    }
     oneWeekColumn.forEach((rowNameIdx, keyIdx) => {
       if (weekIdx === 0) {
         result[keyIdx] = [];
@@ -69,13 +81,25 @@ const pivot = (rowsLabel, origin) => {
 
   return result;
 };
+const splitWithTrim = d => {
+  if (typeof d !== 'string') {
+    console.warn(d);
+    return [];
+  }
+  if (d) {
+    return d.split(',').map(str => str.trim());
+  }
+  return [];
+};
 
 export default function PivotTable({ tableData = {} }) {
-  const { table, tableDataRows } = useSelector(state => state.contents);
+  const { table, tableSetList } = useSelector(state => state.contents);
   const { columnsLabel, rowsLabel = [] } = table;
 
   const hasStaticRowsLabel = rowsLabel.length > 0;
+  const tableDataRows = tableSetList.map(data => data.defaultRows);
   const rowsMap = findRowIdx(rowsLabel, tableDataRows);
+
   const pivotData = pivot(rowsMap, tableData);
   return columnsLabel && tableData ? (
     <table style={styles.table}>

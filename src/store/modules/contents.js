@@ -10,8 +10,9 @@ const SET_TABLE_COLUMNS = 'template/SET_TABLE_COLUMNS';
 const SET_TABLE_ROWS = 'template/SET_TABLE_ROWS';
 
 const SET_TEXT_DATA = 'data/SET_TEXT_DATA';
-const SET_TABLE_DATA = 'data/SET_TABLE_DATA';
-const SET_TABLE_DATA_ROWS = 'data/SET_TABLE_DATA_ROWS';
+// const SET_TABLE_DATA = 'data/SET_TABLE_DATA';
+// const SET_TABLE_DATA_ROWS = 'data/SET_TABLE_DATA_ROWS';
+const SET_TABLE_DATA_SETS = 'data/SET_TABLE_DATA_SETS';
 
 const IMPORT_CONTENTS_DATA = 'data/IMPORT_CONTENTS_DATA';
 const EXPORT_CONTENTS_DATA = 'data/EXPORT_CONTENTS_DATA';
@@ -28,8 +29,10 @@ export const ContentsActions = {
 
   setVariables: createAction(SET_VARIABLES, variables => variables),
   setTextData: createAction(SET_TEXT_DATA, text => text),
-  setTableDataRows: createAction(SET_TABLE_DATA_ROWS, data => data),
-  setTableData: createAction(SET_TABLE_DATA, data => data),
+
+  // setTableData: createAction(SET_TABLE_DATA, data => data),
+  // setTableDataRows: createAction(SET_TABLE_DATA_ROWS, data => data),
+  setTableDataSet: createAction(SET_TABLE_DATA_SETS, list => list),
 
   importContentsData: createAction(IMPORT_CONTENTS_DATA, data => data),
   exportContentsData: createAction(EXPORT_CONTENTS_DATA, data => data),
@@ -56,15 +59,32 @@ const initialState = {
   //data
   variables: Sample.source_variables,
   textData: Sample.source_data,
-  tableDataRows: [
-    splitWithTrim(Sample.table_data_rows1),
-    splitWithTrim(Sample.table_data_rows2),
-    splitWithTrim(Sample.table_data_rows3),
-  ],
-  tableData: [
-    Sample.table_data_week1,
-    Sample.table_data_week2,
-    Sample.table_data_week3,
+  // tableDataRows: [
+  //   splitWithTrim(Sample.table_data_rows1),
+  //   splitWithTrim(Sample.table_data_rows2),
+  //   splitWithTrim(Sample.table_data_rows3),
+  // ],
+  // tableData: [
+  //   Sample.table_data_week1,
+  //   Sample.table_data_week2,
+  //   Sample.table_data_week3,
+  // ],
+  tableSetList: [
+    {
+      id: 0,
+      defaultData: Sample.table_data_week1,
+      defaultRows: Sample.table_data_rows1,
+    },
+    {
+      id: 1,
+      defaultData: Sample.table_data_week2,
+      defaultRows: Sample.table_data_rows2,
+    },
+    {
+      id: 2,
+      defaultData: Sample.table_data_week3,
+      defaultRows: Sample.table_data_rows3,
+    },
   ],
 
   //result
@@ -118,18 +138,31 @@ export default handleActions(
       produce(state, draft => {
         draft.textData = action.payload;
       }),
-    [SET_TABLE_DATA]: (state, action) => {
-      const { idx, data } = action.payload;
+    // [SET_TABLE_DATA]: (state, action) => {
+    //   const { idx, data } = action.payload;
+    //   // const
+    //   return produce(state, draft => {
+    //     draft.tableSetList[idx] = {
+    //       ...state.tableSetList[idx],
+    //       defaultData: data,
+    //     };
+    //   });
+    // },
+    [SET_TABLE_DATA_SETS]: (state, action) => {
+      const data = action.payload;
+      // const defaultDataList = dataSet.map()
       return produce(state, draft => {
-        draft.tableData[idx] = data;
+        // draft.tableData = defaultData;
+        // draft.tableDataRows = defaultRows;
+        draft.tableSetList = data;
       });
     },
-    [SET_TABLE_DATA_ROWS]: (state, action) => {
-      const { idx, data } = action.payload;
-      return produce(state, draft => {
-        draft.tableDataRows[idx] = splitWithTrim(data);
-      });
-    },
+    // [SET_TABLE_DATA_ROWS]: (state, action) => {
+    //   const { idx, data } = action.payload;
+    //   return produce(state, draft => {
+    //     draft.tableDataRows[idx] = splitWithTrim(data);
+    //   });
+    // },
 
     [IMPORT_CONTENTS_DATA]: (state, action) => {
       const data = action.payload;
@@ -142,16 +175,31 @@ export default handleActions(
         };
         draft.variables = data.source_variables;
         draft.textData = data.source_data;
-        draft.tableDataRows = [
-          data.table_data_rows1,
-          data.table_data_rows2,
-          data.table_data_rows3,
-        ];
-        draft.tableData = [
-          data.table_data_week1,
-          data.table_data_week2,
-          data.table_data_week3,
-        ];
+        draft.tableSetList = (inputData => {
+          if (inputData.table_data_rows1) {
+            return [
+              {
+                id: 0,
+                defaultData: inputData.table_data_week1,
+                defaultRows: inputData.table_data_rows1.join(','),
+              },
+              {
+                id: 1,
+                defaultData: inputData.table_data_week2,
+                defaultRows: inputData.table_data_rows2.join(','),
+              },
+              {
+                id: 2,
+                defaultData: inputData.table_data_week3,
+                defaultRows: inputData.table_data_rows3.join(','),
+              },
+            ];
+          } else if (inputData.table_data_set) {
+            return inputData.table_data_set;
+          } else {
+            return [];
+          }
+        })(data);
       });
     },
     [EXPORT_CONTENTS_DATA]: (state, action) =>
@@ -163,12 +211,7 @@ export default handleActions(
           table_rows_label: draft.table.rowsLabel.join(','),
           source_variables: draft.variables,
           source_data: draft.textData,
-          table_data_rows1: draft.tableDataRows[0],
-          table_data_rows2: draft.tableDataRows[1],
-          table_data_rows3: draft.tableDataRows[2],
-          table_data_week1: draft.tableData[0],
-          table_data_week2: draft.tableData[1],
-          table_data_week3: draft.tableData[2],
+          table_data_set: draft.tableSetList,
         };
       }),
 
@@ -178,16 +221,18 @@ export default handleActions(
         postTextSchema,
         variables = '',
         textData = '',
-        tableData = [],
+        // tableData = [],
+        tableSetList = [],
       } = state;
-      const variablieList = variables.split(',');
+      const variableList = variables.split(',');
       const textDataList = textData.split('\n');
       const tableDataPerKey = [];
 
       const shouldSendMailMap = {};
-      tableData.forEach((week, weekIdx, arr) => {
+      tableSetList.forEach(({ defaultData: week }, weekIdx, arr) => {
         const weekKey = 'week' + (weekIdx + 1);
-        if (!week) {
+        if (!week || typeof week !== 'string') {
+          console.warn(week);
           return;
         }
         const rows = week.split('\n');
@@ -232,8 +277,8 @@ export default handleActions(
             emailId: getEmailId(data),
             // tableColumnsLabel: table.columnsLabel,
             // tableRowsLabel: table.rowsLabel,
-            preText: parseText(preTextSchema, variablieList, data),
-            postText: parseText(postTextSchema, variablieList, data),
+            preText: parseText(preTextSchema, variableList, data),
+            postText: parseText(postTextSchema, variableList, data),
             tableData: tableDataPerKey[mailKey],
           };
         });

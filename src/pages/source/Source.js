@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import InputText from './InputText';
+import InputText from '../../components/in/InputText';
 import { ContentsActions } from '../../store/modules/contents';
 import TableData from './TableData';
 
-function SourceInput() {
+function SourceInput(props) {
   const dispatch = useDispatch();
   const { variables, textData } = useSelector(state => state.contents);
 
@@ -21,16 +21,16 @@ function SourceInput() {
       <InputText
         name="source_variables"
         defautRows={1}
-        value={variables}
+        defaultValue={variables}
         onChanged={setVariables}
       ></InputText>
       <InputText
         name="source_data"
         defautRows={6}
-        value={textData}
+        defaultValue={textData}
         onChanged={setTextData}
       ></InputText>
-      <TableData></TableData>
+      <TableData {...props}></TableData>
     </div>
   );
 }
