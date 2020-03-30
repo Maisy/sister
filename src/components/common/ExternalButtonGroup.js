@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { ContentsActions } from '../../store/modules/contents';
-import { StaticActions } from '../../store/modules/static';
+import { StaticActions } from '../../store/modules/basicInfos';
 import { getFormatDate } from '../../utils/date';
 import { saveFile, loadJsonFile } from '../../utils/file';
 import { makeStyles } from '@material-ui/core';
@@ -27,7 +27,7 @@ function ExternalButtonGroup() {
   const dispatch = useDispatch();
   const [save, setSave] = useState(false);
   const contentsFileData = useSelector(state => state.contents.fileData);
-  const staticFileData = useSelector(state => state.static.fileData);
+  const staticFileData = useSelector(state => state.basicInfo.fileData);
 
   const importActions = data => {
     dispatch(StaticActions.importEmailData(data));

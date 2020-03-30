@@ -1,65 +1,50 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import InputText from '../../components/in/InputText';
-import { ContentsActions } from '../../store/modules/contents';
 
-function Template({
-  preTextSchema,
-  postTextSchema,
-  tableColumnsLabel,
-  tableRowsLabel,
-  ContentsActions,
-}) {
+function Template({ setTemplateData }) {
+  const {
+    preTextSchema,
+    postTextSchema,
+    table: { columnsLabel: tableColumnsLabel, rowsLabel: tableRowsLabel },
+  } = useSelector(({ contents }) => contents);
+
   return (
     <div>
       <InputText
         name="pre_text"
         defaultValue={preTextSchema}
-        onChanged={ContentsActions.setPreText}
+        onChanged={val => {
+          setTemplateData('preTextSchema', val);
+        }}
       ></InputText>
       <InputText
         name="table_columns_label"
         label="Column Name"
         defautRows={1}
         defaultValue={tableColumnsLabel}
-        onChanged={ContentsActions.setTableColumnsLabel}
+        onChanged={val => {
+          setTemplateData('tableColumnLabel', val);
+        }}
       ></InputText>
       <InputText
         name="table_rows_label"
-        label="Rows Name (optional)"
+        label="Rows Name"
         defautRows={1}
         defaultValue={tableRowsLabel}
-        onChanged={ContentsActions.setTableRowsLabel}
+        onChanged={val => {
+          setTemplateData('tableRowsLabel', val);
+        }}
       ></InputText>
-      {/* <InputText
-        name="table_columns_hide"
-        label="Hide Column Name"
-        defautRows={1}
-        value={defaultValue["table_columns_hide"]}
-        onChanged={onChanged}
-      ></InputText> */}
       <InputText
         name="post_text"
         defaultValue={postTextSchema}
-        onChanged={ContentsActions.setPostText}
+        onChanged={val => {
+          setTemplateData('postTextSchema', val);
+        }}
       ></InputText>
     </div>
   );
 }
 
-const mapStateToProps = ({ contents }) => {
-  const { preTextSchema, postTextSchema, table } = contents;
-  return {
-    preTextSchema,
-    postTextSchema,
-    tableColumnsLabel: table ? table.columnsLabel : [],
-    tableRowsLabel: table ? table.rowsLabel : [],
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  ContentsActions: bindActionCreators(ContentsActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Template);
+export default React.memo(Template);

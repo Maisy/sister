@@ -9,21 +9,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function InputText({
+function InputText({
   defautRows = 4,
   name,
   label,
   onChanged,
   defaultValue = '',
 }) {
+  // console.log(`render input text...${name}`);
   const classes = useStyles();
 
   const handleOnChange = event => {
-    // console.log(event.target.value)
-    // onChanged({ [name]: event.target.value });
     if (typeof onChanged !== 'function') {
       console.error('onChanged is not function');
-      console.log(onChanged);
       return;
     }
 
@@ -44,3 +42,4 @@ export default function InputText({
     />
   );
 }
+export default React.memo(InputText);

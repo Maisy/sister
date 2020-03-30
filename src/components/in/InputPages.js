@@ -43,7 +43,7 @@ export default function InputPages(props) {
         <Tab label="Source Data" className={classes.tab} {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={tabIdx} index={0}>
-        <StaticData></StaticData>
+        <StaticData {...props}></StaticData>
       </TabPanel>
       <TabPanel value={tabIdx} index={1}>
         <Template {...props}></Template>

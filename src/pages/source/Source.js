@@ -1,20 +1,18 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import InputText from '../../components/in/InputText';
-import { ContentsActions } from '../../store/modules/contents';
 import TableData from './TableData';
 
-function SourceInput(props) {
-  const dispatch = useDispatch();
+function SourceInput({ setSourceData, setVariables, setTableData }) {
   const { variables, textData } = useSelector(state => state.contents);
 
-  const setVariables = data => {
-    dispatch(ContentsActions.setVariables(data));
-  };
+  useEffect(() => {
+    setVariables(variables);
+  }, [variables, setVariables]);
 
-  const setTextData = data => {
-    dispatch(ContentsActions.setTextData(data));
-  };
+  useEffect(() => {
+    setSourceData(textData);
+  }, [textData, setSourceData]);
 
   return (
     <div>
@@ -28,9 +26,9 @@ function SourceInput(props) {
         name="source_data"
         defautRows={6}
         defaultValue={textData}
-        onChanged={setTextData}
+        onChanged={setSourceData}
       ></InputText>
-      <TableData {...props}></TableData>
+      <TableData setTableData={setTableData}></TableData>
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import InputText from '../../components/in/InputText';
 import { makeStyles } from '@material-ui/core';
-import { StaticActions } from '../../store/modules/static';
 
 const useStyles = makeStyles({
   root: {
@@ -10,39 +9,28 @@ const useStyles = makeStyles({
   },
 });
 
-function EquipInfos({
-  defaultData,
-  defaultColumns,
-  onColumnChange,
-  onDataChange,
-}) {
+function EquipInfos({ onChanged }) {
   const classes = useStyles();
+  const { equipInfos, equipColumns } = useSelector(
+    ({ basicInfo }) => basicInfo
+  );
 
   return (
     <div className={classes.root}>
       <InputText
         name="equip_info_columns"
         defautRows={1}
-        defaultValue={defaultColumns}
-        onChanged={onColumnChange}
+        defaultValue={equipColumns}
+        onChanged={value => onChanged('equipColumns', value)}
       ></InputText>
       <InputText
         name="equip_info_data"
         defautRows={10}
-        defaultValue={defaultData}
-        onChanged={onDataChange}
+        defaultValue={equipInfos}
+        onChanged={value => onChanged('equipInfos', value)}
       ></InputText>
     </div>
   );
 }
 
-const mapStateToProps = state => ({
-  defaultData: state.static.equipInfos,
-  defaultColumns: state.static.equipColumns,
-});
-const mapDispatchToProps = dispatch => ({
-  onColumnChange: value => dispatch(StaticActions.setEquipmentColumns(value)),
-  onDataChange: value => dispatch(StaticActions.setEquipmentInfos(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EquipInfos);
+export default React.memo(EquipInfos);

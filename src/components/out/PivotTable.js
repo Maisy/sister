@@ -94,8 +94,10 @@ const splitWithTrim = d => {
 
 export default function PivotTable({ tableData = {} }) {
   const { table, tableSetList } = useSelector(state => state.contents);
-  const { columnsLabel, rowsLabel = [] } = table;
+  const { columnsLabel: columnsStr, rowsLabel: rowsStr } = table;
 
+  const rowsLabel = splitWithTrim(rowsStr);
+  const columnsLabel = splitWithTrim(columnsStr);
   const hasStaticRowsLabel = rowsLabel.length > 0;
   const tableDataRows = tableSetList.map(data => data.defaultRows);
   const rowsMap = findRowIdx(rowsLabel, tableDataRows);

@@ -4,7 +4,7 @@ import TableDataAddButton from './DataAddButton';
 import { useState } from 'react';
 import TableDataSet from './TableDataSet';
 
-export default function TableData({ setTableData }) {
+function TableData({ setTableData }) {
   const { tableSetList } = useSelector(state => state.contents);
   const [dataList, setDataList] = useState([]);
 
@@ -28,7 +28,6 @@ export default function TableData({ setTableData }) {
   };
 
   const deleteDataFunc = selectedIdx => {
-    console.log(`click ${selectedIdx} idx`);
     const newList = [];
     let idIdx = 0;
     dataList.forEach(({ defaultData, defaultRows }, idx) => {
@@ -63,6 +62,7 @@ export default function TableData({ setTableData }) {
   };
 
   // console.log(dataList);
+  // console.log('render table data...');
 
   return (
     <div>
@@ -83,3 +83,4 @@ export default function TableData({ setTableData }) {
     </div>
   );
 }
+export default React.memo(TableData);

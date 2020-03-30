@@ -14,8 +14,6 @@ const useStyles = makeStyles(theme => ({
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    // flexBasis: "33.33%",
-    // flexShrink: 0
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
@@ -23,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ControlledExpansionPanels() {
+export default function ControlledExpansionPanels({ setStaticData }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -45,7 +43,7 @@ export default function ControlledExpansionPanels() {
           <Typography className={classes.heading}>User Emails</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <UserEmails></UserEmails>
+          <UserEmails onChanged={setStaticData}></UserEmails>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel
@@ -60,12 +58,9 @@ export default function ControlledExpansionPanels() {
           <Typography className={classes.heading}>
             Equipment Informations
           </Typography>
-          {/* <Typography className={classes.secondaryHeading}>
-            You are currently not an owner
-          </Typography> */}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <EquipInfos></EquipInfos>
+          <EquipInfos onChanged={setStaticData}></EquipInfos>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
