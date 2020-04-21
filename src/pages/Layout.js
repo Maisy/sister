@@ -7,7 +7,6 @@ import ExternalButtonGroup from '../components/common/ExternalButtonGroup';
 import { useDispatch } from 'react-redux';
 import { ContentsActions } from '../store/modules/contents';
 import { StaticActions } from '../store/modules/basicInfos';
-// import TestComponent from './TestComponent';
 
 export default function Layout() {
   //basic info

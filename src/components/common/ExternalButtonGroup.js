@@ -26,10 +26,10 @@ function ExternalButtonGroup() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [save, setSave] = useState(false);
-  const contentsFileData = useSelector(state => state.contents.fileData);
-  const staticFileData = useSelector(state => state.basicInfo.fileData);
+  const contentsFileData = useSelector((state) => state.contents.fileData);
+  const staticFileData = useSelector((state) => state.basicInfo.fileData);
 
-  const importActions = data => {
+  const importActions = (data) => {
     dispatch(StaticActions.importEmailData(data));
     dispatch(ContentsActions.importContentsData(data));
   };
@@ -53,16 +53,16 @@ function ExternalButtonGroup() {
   return (
     <div className={classes.root}>
       {/* <label htmlFor="ex_file">업로드</label> */}
-      <Input
+      {/* <Input
         // id="ex_file"
         className={classes.importButton}
         type={'file'}
         onChange={e => loadJsonFile(e, importActions)}
         inputProps={{ accept: '.json' }}
-      ></Input>
+      ></Input> */}
 
       <Button variant="outlined" size="small" onClick={exportActions}>
-        Save data
+        EXPORT
       </Button>
     </div>
   );
