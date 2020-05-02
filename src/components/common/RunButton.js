@@ -1,6 +1,6 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { ContentsActions } from '../../store/modules/contents';
@@ -16,8 +16,10 @@ const useStyle = makeStyles({
   },
 });
 
-function RunButton({ ContentsActions, StaticActions, addRunClick }) {
+function RunButton({ addRunClick }) {
   const classes = useStyle();
+  const dispatch = useDispatch();
+
   return (
     <Button
       className={classes.root}
@@ -25,8 +27,8 @@ function RunButton({ ContentsActions, StaticActions, addRunClick }) {
       // color="primary"
       onClick={() => {
         addRunClick();
-        StaticActions.getReceiver();
-        ContentsActions.parseData();
+        dispatch(StaticActions.getReceiver());
+        dispatch(ContentsActions.parseData());
       }}
     >
       >>
@@ -34,16 +36,4 @@ function RunButton({ ContentsActions, StaticActions, addRunClick }) {
   );
 }
 
-const mapStateToProps = state => ({});
-
-// const mapDispatchToProps = dispatch => ({
-//   parseData: () => dispatch(ContentsActions.parseData()),
-//   getReceiver: () => dispatch(getReceiver()),
-// })
-const mapDispatchToProps = dispatch => ({
-  ContentsActions: bindActionCreators(ContentsActions, dispatch),
-  StaticActions: bindActionCreators(StaticActions, dispatch),
-});
-// bindActionCreators({ ContentsActions, getReceiver }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(RunButton);
+export default RunButton;

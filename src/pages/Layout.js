@@ -7,7 +7,7 @@ import ExternalButtonGroup from '../components/common/ExternalButtonGroup';
 import { useDispatch } from 'react-redux';
 import { ContentsActions } from '../store/modules/contents';
 import { StaticActions } from '../store/modules/basicInfos';
-import ErrorChild from '../components/common/ErrorChild';
+// import ErrorChild from '../components/common/ErrorChild';
 
 export default function Layout() {
   //basic info
@@ -53,7 +53,7 @@ export default function Layout() {
   };
   return (
     <Grid container spacing={3}>
-      <ErrorChild></ErrorChild>
+      {/* <ErrorChild></ErrorChild> */}
       <Grid item xs={12} sm={12} md={5}>
         <ExternalButtonGroup></ExternalButtonGroup>
         <InputContents
