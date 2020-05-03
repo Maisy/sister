@@ -196,8 +196,7 @@ export default handleActions(
           source_data,
         } = data;
 
-        draft = {
-          ...state,
+        Object.assign(draft, {
           preTextSchema: pre_text,
           postTextSchema: post_text,
           tableColumnsLabel: table_columns_label,
@@ -229,7 +228,7 @@ export default handleActions(
               return [];
             }
           })(data),
-        };
+        });
       });
     },
     [EXPORT_CONTENTS_DATA]: (state, action) =>
