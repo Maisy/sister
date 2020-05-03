@@ -33,43 +33,23 @@ const styles = {
   },
 };
 
-const findRowIdx = (templateRowsLabel, dataRowsLabel) => {
-  if (!Array.isArray(dataRowsLabel)) {
-    console.warn(dataRowsLabel);
-    return templateRowsLabel;
-  }
-  // console.log(dataRowsLabel);
-  // console.log(splitWithTrim(dataRowsLabel));
-  return dataRowsLabel.map(oneWeekColumn =>
-    templateRowsLabel.map(row => splitWithTrim(oneWeekColumn).indexOf(row))
-  );
-};
 const pivot = (rowsLabel, origin) => {
   const result = [];
   if (rowsLabel.length === 0) {
-    Object.keys(origin).forEach(dataKey => {
+    console.log('rows label is empty.');
+    Object.keys(origin).forEach((dataKey) => {
       result.push(origin[dataKey]);
     });
     return result;
   }
 
-  rowsLabel.forEach((oneWeekColumn, weekIdx) => {
-    const keyNm = (i => {
-      if (i === 0) {
-        return 'week1';
-      } else if (i === 1) {
-        return 'week2';
-      } else {
-        return 'week3';
-      }
-    })(weekIdx);
+  rowsLabel.forEach((weekColumnList, weekIdx) => {
+    const keyNm = `week${weekIdx + 1}`;
 
-    if (!Array.isArray(oneWeekColumn)) {
-      // console.log(`oneWeekColumn`);
-      // console.log(oneWeekColumn);
+    if (!Array.isArray(weekColumnList)) {
       return;
     }
-    oneWeekColumn.forEach((rowNameIdx, keyIdx) => {
+    weekColumnList.forEach((rowNameIdx, keyIdx) => {
       if (weekIdx === 0) {
         result[keyIdx] = [];
       }
@@ -81,28 +61,33 @@ const pivot = (rowsLabel, origin) => {
 
   return result;
 };
-const splitWithTrim = d => {
+const splitWithTrim = (d) => {
   if (typeof d !== 'string') {
     console.warn(d);
     return [];
   }
   if (d) {
-    return d.split(',').map(str => str.trim());
+    return d.split(',').map((str) => str.trim());
   }
   return [];
 };
 
 export default function PivotTable({ tableData = {} }) {
-  const { table, tableSetList } = useSelector(state => state.contents);
-  const { columnsLabel: columnsStr, rowsLabel: rowsStr } = table;
+  const {
+    tableRowIndexPerWeek,
+    tableRowsLabel: rowsStr,
+    tableColumnsLabel: columnsStr,
+  } = useSelector((state) => state.contents);
+  // const { columnsLabel: columnsStr, rowsLabel: rowsStr } = table;
 
   const rowsLabel = splitWithTrim(rowsStr);
   const columnsLabel = splitWithTrim(columnsStr);
-  const hasStaticRowsLabel = rowsLabel.length > 0;
-  const tableDataRows = tableSetList.map(data => data.defaultRows);
-  const rowsMap = findRowIdx(rowsLabel, tableDataRows);
+  // const hasStaticRowsLabel = rowsLabel.length > 0;
+  // const tableDataRows = tableSetList.map((data) => data.defaultRows);
+  // const rowsMap = findRowIdx(rowsLabel, tableDataRows);
 
-  const pivotData = pivot(rowsMap, tableData);
+  const pivotData = pivot(tableRowIndexPerWeek, tableData);
+
   return columnsLabel && tableData ? (
     <table style={styles.table}>
       <thead>
@@ -123,14 +108,12 @@ export default function PivotTable({ tableData = {} }) {
       <tbody>
         {pivotData.map((row, rowIdx) => {
           return row ? (
-            <tr key={'' + rowIdx}>
-              {hasStaticRowsLabel && (
-                <td style={styles.th} key={rowsLabel + '' + rowIdx}>
-                  {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ''}
-                </td>
-              )}
+            <tr key={rowIdx}>
+              <td style={styles.th} key={`${rowsLabel}${rowIdx}`}>
+                {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ''}
+              </td>
               {row.map((columnItem, colIdx, arr) => {
-                const tdStyle = (index => {
+                const tdStyle = ((index) => {
                   if (arr.length === index + 1)
                     return { ...styles.td, ...styles.emphasis };
                   else {
@@ -138,11 +121,10 @@ export default function PivotTable({ tableData = {} }) {
                   }
                 })(colIdx);
                 return (
-                  <td style={tdStyle} key={columnItem + '' + colIdx}>
+                  <td style={tdStyle} key={`${columnItem}${colIdx}`}>
                     {columnItem ? columnItem.trim() : ''}
                   </td>
                 );
-                // }
               })}
             </tr>
           ) : (

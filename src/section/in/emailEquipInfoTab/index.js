@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UserEmails from './UserEmails';
 import EquipInfos from './EquipInfos';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
@@ -21,11 +21,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ControlledExpansionPanels({ setStaticData }) {
+export default function EmailEquipInfoTab({ setInputData }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState('panel1');
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -43,7 +43,7 @@ export default function ControlledExpansionPanels({ setStaticData }) {
           <Typography className={classes.heading}>User Emails</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <UserEmails onChanged={setStaticData}></UserEmails>
+          <UserEmails onChanged={setInputData}></UserEmails>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel
@@ -60,7 +60,7 @@ export default function ControlledExpansionPanels({ setStaticData }) {
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <EquipInfos onChanged={setStaticData}></EquipInfos>
+          <EquipInfos onChanged={setInputData}></EquipInfos>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

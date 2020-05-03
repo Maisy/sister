@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { ContentsActions } from '../../store/modules/contents';
-import { StaticActions } from '../../store/modules/basicInfos';
+import { ContentsActions } from '../store/modules/contents';
+import { StaticActions } from '../store/modules/basicInfos';
 
 const useStyle = makeStyles({
   root: {
@@ -16,7 +16,7 @@ const useStyle = makeStyles({
   },
 });
 
-function RunButton({ addRunClick }) {
+function RunButton({ inputData: { equipInfos, userEmails, ...data } }) {
   const classes = useStyle();
   const dispatch = useDispatch();
 
@@ -26,9 +26,8 @@ function RunButton({ addRunClick }) {
       variant="contained"
       // color="primary"
       onClick={() => {
-        addRunClick();
-        dispatch(StaticActions.getReceiver());
-        dispatch(ContentsActions.parseData());
+        dispatch(StaticActions.getReceiver({ equipInfos, userEmails }));
+        dispatch(ContentsActions.parseData(data));
       }}
     >
       >>

@@ -9,7 +9,7 @@ import Receiver from './Receiver';
 import ViewText from './ViewText';
 import classNames from 'classnames';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
 
 function ViewContents() {
   const classes = useStyles();
-  const dataList = useSelector(store => store.contents.result);
+  const dataList = useSelector((store) => store.contents.result);
 
   return (
-    dataList &&
+    // dataList &&
     dataList.map((data, idx) => {
       return data ? (
         <Paper

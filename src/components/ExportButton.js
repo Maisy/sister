@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { ContentsActions } from '../../store/modules/contents';
-import { StaticActions } from '../../store/modules/basicInfos';
-import { getFormatDate } from '../../utils/date';
-import { saveFile } from '../../utils/file';
+import { ContentsActions } from '../store/modules/contents';
+import { StaticActions } from '../store/modules/basicInfos';
+import { getFormatDate } from '../utils/date';
+import { saveFile } from '../utils/file';
 
 export default function ExportButton() {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ export default function ExportButton() {
     if (save) {
       saveFile(
         getFormatDate(new Date()) + '.json',
-        JSON.stringify({ ...staticFileData, ...contentsFileData })
+        JSON.stringify({ ...staticFileData, ...contentsFileData }),
       );
       setSave(false);
     }

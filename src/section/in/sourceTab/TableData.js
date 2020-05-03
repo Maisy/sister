@@ -1,9 +1,9 @@
 import React from 'react';
-import InputText from '../../components/in/InputText';
+import InputText from '../InputText';
 import { makeStyles, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Clear';
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles((theme) => ({
   root: {
     textAlign: 'right',
     // backgroundColor: '#dbdbdb',
@@ -13,39 +13,38 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-export default function TableDataSet({
-  dataIdx,
+export default function TableData({
+  // dataIdx,
+  name,
   defaultData = [],
   defaultRows = [],
+  setTableRows,
+  setTableData,
   deleteCallback,
-  setData: setTableData,
-  setRow: setTableDataRows,
 }) {
   const classes = useStyle();
   return (
     <div className={classes.root}>
-      {dataIdx}
+      {/* {dataIdx} */}
       <IconButton
         aria-label="delete"
         size="small"
         edge="end"
-        onClick={e => deleteCallback(dataIdx)}
+        onClick={(e) => deleteCallback()}
       >
         <DeleteIcon></DeleteIcon>
       </IconButton>
       <InputText
-        name={`table_data_rows${dataIdx + 1}`}
-        label={`Table Data Rows (WEEK ${dataIdx + 1})`}
+        name={`[${name}] Table Data Rows`}
         defautRows={1}
-        defaultValue={defaultRows}
-        onChanged={data => setTableDataRows(dataIdx, data)}
+        value={defaultRows}
+        onChanged={(data) => setTableRows(data)}
       ></InputText>
       <InputText
-        name={`table_data${dataIdx + 1}`}
-        label={`WEEK ${dataIdx + 1}`}
+        name={`[${name}] Table Data`}
         defautRows={6}
-        defaultValue={defaultData}
-        onChanged={data => setTableData(dataIdx, data)}
+        value={defaultData}
+        onChanged={(data) => setTableData(data)}
       ></InputText>
     </div>
   );

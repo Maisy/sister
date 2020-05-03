@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from './pages/Layout';
+import Layout from './section/Layout';
 
 function App() {
   return (

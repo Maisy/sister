@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { ContentsActions } from '../../store/modules/contents';
-import { StaticActions } from '../../store/modules/basicInfos';
-import { loadJsonFile } from '../../utils/file';
+import { ContentsActions } from '../store/modules/contents';
+import { StaticActions } from '../store/modules/basicInfos';
+import { loadJsonFile } from '../utils/file';
 
 const useStyles = makeStyles((theme) => ({
   root: {
