@@ -16,7 +16,7 @@ function Template({ setInputData }) {
     setTemplateData({
       preTextSchema,
       postTextSchema,
-      tableColumnLabel: tableColumnsLabel,
+      tableColumnsLabel,
       tableRowsLabel,
     });
   }, [preTextSchema, postTextSchema, tableColumnsLabel, tableRowsLabel]);
@@ -41,9 +41,9 @@ function Template({ setInputData }) {
       <InputText
         name="[Table] Column Name"
         defautRows={1}
-        value={templateData['tableColumnLabel']}
+        value={templateData['tableColumnsLabel']}
         onChanged={(val) => {
-          setDataCB('tableColumnLabel', val);
+          setDataCB('tableColumnsLabel', val);
         }}
       ></InputText>
       <InputText
