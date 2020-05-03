@@ -88,8 +88,6 @@ const findRowIndexPerWeek = (templateRowsLabel, dataRowsLabel) => {
     console.warn(dataRowsLabel);
     return templateRowsLabel;
   }
-  // console.log(dataRowsLabel);
-  // console.log(splitWithTrim(dataRowsLabel));
   return dataRowsLabel.map((weekColumnList) =>
     templateRowsLabel.map((row) => splitWithTrim(weekColumnList).indexOf(row)),
   );
@@ -131,52 +129,54 @@ const findRowIndexPerWeek = (templateRowsLabel, dataRowsLabel) => {
 }
  */
 const getTableDataPerMachine = (tableSetList) => {
-  const tableDataPerKey = {};
-  const shouldSendMailMap = {};
+  let lastWeekKey;
 
-  tableSetList
+  const tableDataPerKey = tableSetList
     .map((tableSet) => tableSet.defaultData)
     .filter((data) => data && typeof data === 'string')
-    // .reduce((result, nextData) => {
-    //   const rows = nextData.split('\n');
-    //   // first line is machine_ID list.
-    //   // MBA310, MBA311, ..
-    //   const machineList = rows[0].split(',');
-    //   // result
-    //   return result;
-    // }, {})
-
-    .forEach((weekData, weekIdx, arr) => {
+    .reduce((dataPerKey, nextData, weekIdx, weekTotal) => {
+      const rows = nextData.split('\n');
+      // first line is machine_ID list.
+      // MBA310, MBA311, ..
+      let machineList; // = splitWithTrim(rows[0]);
       const weekKey = `week${weekIdx + 1}`;
-      const rows = weekData.split('\n');
+      lastWeekKey = `week${weekTotal.length}`;
 
-      //first line  is machine.
-      const machineList = rows[0].split(',');
-      rows.forEach((row, rowIdx) => {
-        row.split(',').forEach((col, colIdx) => {
-          const machineId = machineList[colIdx].trim(); //장비명
-          if (rowIdx === 0) {
-            if (!tableDataPerKey[machineId]) {
-              tableDataPerKey[machineId] = {};
-              shouldSendMailMap[machineId] = false;
-            }
-            tableDataPerKey[machineId][weekKey] = [];
-          } else {
-            tableDataPerKey[machineId][weekKey].push(col);
-            if (
-              weekIdx === arr.length - 1 &&
-              col !== 0 &&
-              !shouldSendMailMap[machineId]
-            ) {
-              //마지막 값이 모두 0인경우 disable
-              shouldSendMailMap[machineId] = true;
-            }
-          }
-        });
+      const machineData = rows.reduce((result, row, rowIdx) => {
+        if (rowIdx === 0) {
+          machineList = splitWithTrim(row);
+          machineList.forEach((machineId) => {
+            result[machineId] = {
+              [weekKey]: [],
+            };
+          });
+        } else {
+          splitWithTrim(row).forEach((col, colIdx) => {
+            const machineId = machineList[colIdx];
+            result[machineId][weekKey].push(col);
+          });
+        }
+        return result;
+      }, {});
+
+      machineList.forEach((machineID) => {
+        dataPerKey[machineID] = {
+          ...dataPerKey[machineID],
+          ...machineData[machineID],
+        };
       });
-    });
 
-  // console.log(JSON.stringify(tableDataPerKey, null, 2));
+      return dataPerKey;
+    }, {});
+
+  //마지막 week에 machine id가 없을 경우 false (disable)
+  const shouldSendMailMap = Object.keys(tableDataPerKey).reduce(
+    (result, machineId) => {
+      result[machineId] = Boolean(tableDataPerKey[machineId][lastWeekKey]);
+      return result;
+    },
+    {},
+  );
 
   return { shouldSendMailMap, tableDataPerKey };
 };
@@ -185,6 +185,7 @@ export default handleActions(
   {
     [IMPORT_CONTENTS_DATA]: (state, action) => {
       const data = action.payload;
+      // console.log(data);
       return produce(state, (draft) => {
         const {
           pre_text,
@@ -288,12 +289,8 @@ export default handleActions(
         draft.result = textDataList.map((data, idx) => {
           const mailKey = textDataList[idx].split(',')[0];
           return {
-            // tableRowIndexPerWeek,
-            // tableRowsLabel,
-            // tableColumnsLabel,
-
-            shouldSend: shouldSendMailMap[mailKey] || false,
-            emailId: getEmailId(data),
+            shouldSend: Boolean(shouldSendMailMap[mailKey]),
+            emailId: getEmailId(data), //machine ID
             preText: parseText(preTextSchema, variableList, data),
             postText: parseText(postTextSchema, variableList, data),
             tableData: tableDataPerKey[mailKey],
