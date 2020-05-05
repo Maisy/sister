@@ -120,7 +120,7 @@ const getTableDataPerMachine = (tableSetList) => {
   const tableDataPerKey = tableSetList
     .map((tableSet) => tableSet.defaultData)
     .filter((data) => data && typeof data === 'string')
-    .reduce((dataPerKey, nextData, weekIdx, weekTotal) => {
+    .reduce((dataPerKey, nextData, weekIdx) => {
       const rows = nextData.split('\n');
       // first line is machine_ID list.
       // MBA310, MBA311, ..
@@ -216,7 +216,7 @@ export default handleActions(
         });
       });
     },
-    [EXPORT_CONTENTS_DATA]: (state, action) =>
+    [EXPORT_CONTENTS_DATA]: (state) =>
       produce(state, (draft) => {
         draft.fileData = {
           pre_text: draft.preTextSchema,
