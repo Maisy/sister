@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import InputText from '../InputText';
 import { makeStyles, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Clear';
@@ -30,7 +32,7 @@ export default function TableData({
         aria-label="delete"
         size="small"
         edge="end"
-        onClick={(e) => deleteCallback()}
+        onClick={() => deleteCallback()}
       >
         <DeleteIcon></DeleteIcon>
       </IconButton>
@@ -49,3 +51,12 @@ export default function TableData({
     </div>
   );
 }
+
+TableData.propTypes = {
+  name: PropTypes.string.isRequired,
+  defaultData: PropTypes.string.isRequired,
+  defaultRows: PropTypes.string.isRequired,
+  setTableRows: PropTypes.func.isRequired,
+  setTableData: PropTypes.func.isRequired,
+  deleteCallback: PropTypes.func.isRequired,
+};

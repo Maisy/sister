@@ -2,7 +2,7 @@ import React from 'react';
 import { Snackbar } from '@material-ui/core';
 
 export default function withErrorHandler(WrappedComponent) {
-  return class extends React.Component {
+  return class ErrorHandler extends React.Component {
     constructor(props) {
       super(props);
       this.state = {};

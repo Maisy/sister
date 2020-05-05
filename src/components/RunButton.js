@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
@@ -30,9 +32,13 @@ function RunButton({ inputData: { equipInfos, userEmails, ...data } }) {
         dispatch(ContentsActions.parseData(data));
       }}
     >
-      >>
+      {'>>'}
     </Button>
   );
 }
+
+RunButton.propTypes = {
+  inputData: PropTypes.object.isRequired,
+};
 
 export default RunButton;

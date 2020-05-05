@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import InputText from '../InputText';
 
 function Template({ setInputData }) {
@@ -10,7 +12,12 @@ function Template({ setInputData }) {
     tableRowsLabel,
   } = useSelector(({ contents }) => contents);
 
-  const [templateData, setTemplateData] = useState({});
+  const [templateData, setTemplateData] = useState({
+    preTextSchema: '',
+    postTextSchema: '',
+    tableColumnsLabel: '',
+    tableRowsLabel: '',
+  });
 
   useEffect(() => {
     setTemplateData({
@@ -64,5 +71,9 @@ function Template({ setInputData }) {
     </div>
   );
 }
+
+Template.propTypes = {
+  setInputData: PropTypes.func.isRequired,
+};
 
 export default React.memo(Template);

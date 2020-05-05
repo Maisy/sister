@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -24,3 +26,7 @@ export default function ErrorDialog({ onClose }) {
     </Snackbar>
   );
 }
+
+ErrorDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+};

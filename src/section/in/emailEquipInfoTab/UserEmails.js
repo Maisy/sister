@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import InputText from '../InputText';
 
 function UserEmails({ onChanged }) {
@@ -23,5 +24,9 @@ function UserEmails({ onChanged }) {
     ></InputText>
   );
 }
+
+UserEmails.propTypes = {
+  onChanged: PropTypes.func.isRequired,
+};
 
 export default UserEmails;

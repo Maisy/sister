@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import TableDataAddButton from './DataAddButton';
 import TableData from './TableData';
 
@@ -62,6 +64,12 @@ function TableDataList({ value: dataList, onChanged: setDataList }) {
     </div>
   );
 }
+
+TableDataList.propTypes = {
+  value: PropTypes.array.isRequired,
+  onChanged: PropTypes.func.isRequired,
+};
+
 export default React.memo(TableDataList, (prev, next) => {
   return prev.value === next.value;
 });

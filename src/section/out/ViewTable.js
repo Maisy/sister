@@ -1,42 +1,39 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const styles = {
   table: {
-    margin: "20px 0",
-    width: "350px",
+    margin: '20px 0',
+    width: '350px',
     height: 200,
-    fontSize: "10pt",
-    border: "1px solid black",
-    borderCollapse: "collapse"
+    fontSize: '10pt',
+    border: '1px solid black',
+    borderCollapse: 'collapse',
   },
   th: {
-    backgroundColor: "#e6e6e6",
-    border: "1px solid #444444",
-    padding: "5px 10px",
+    backgroundColor: '#e6e6e6',
+    border: '1px solid #444444',
+    padding: '5px 10px',
     // padding: 0,
-    textAlign: "center",
-    fontWeight: "bold"
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   td: {
-    border: "1px solid #444444",
-    padding: "5px 10px",
+    border: '1px solid #444444',
+    padding: '5px 10px',
     // padding: 0,
-    textAlign: "center"
+    textAlign: 'center',
   },
   first: {
-    textAlign: "left"
+    textAlign: 'left',
   },
   emphasis: {
-    color: "red",
-    fontWeight: "bold"
-  }
+    color: 'red',
+    fontWeight: 'bold',
+  },
 };
 
-export default function ViewTable({
-  columnsLabel = [],
-  rowsLabel = [],
-  data = ""
-}) {
+export default function ViewTable({ columnsLabel, rowsLabel, data }) {
   const hasStaticRowsLabel = rowsLabel.length > 0;
   return columnsLabel && data ? (
     <table style={styles.table}>
@@ -56,16 +53,16 @@ export default function ViewTable({
         </tr>
       </thead>
       <tbody>
-        {data.split("\n").map((row, rowIdx) => {
+        {data.split('\n').map((row, rowIdx) => {
           return row ? (
-            <tr key={row + "" + rowIdx}>
+            <tr key={row + '' + rowIdx}>
               {hasStaticRowsLabel && (
-                <td style={styles.th} key={rowsLabel + "" + rowIdx}>
-                  {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ""}
+                <td style={styles.th} key={rowsLabel + '' + rowIdx}>
+                  {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ''}
                 </td>
               )}
-              {row.split(",").map((columnItem, colIdx, arr) => {
-                const tdStyle = (index => {
+              {row.split(',').map((columnItem, colIdx, arr) => {
+                const tdStyle = ((index) => {
                   if (arr.length === index + 1)
                     return { ...styles.td, ...styles.emphasis };
                   else {
@@ -73,20 +70,26 @@ export default function ViewTable({
                   }
                 })(colIdx);
                 return (
-                  <td style={tdStyle} key={columnItem + "" + colIdx}>
-                    {columnItem ? columnItem.trim() : ""}
+                  <td style={tdStyle} key={columnItem + '' + colIdx}>
+                    {columnItem ? columnItem.trim() : ''}
                   </td>
                 );
                 // }
               })}
             </tr>
           ) : (
-            ""
+            ''
           );
         })}
       </tbody>
     </table>
   ) : (
-    ""
+    ''
   );
 }
+
+ViewTable.propTypes = {
+  columnsLabel: PropTypes.array.isRequired,
+  rowsLabel: PropTypes.array.isRequired,
+  data: PropTypes.string.isRequired,
+};

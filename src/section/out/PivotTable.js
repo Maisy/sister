@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { useSelector } from 'react-redux';
+import { splitCommaWithTrim } from '../../utils/string';
 
 const styles = {
   table: {
@@ -54,41 +57,27 @@ const pivot = (rowsLabel, origin) => {
         result[keyIdx] = [];
       }
 
-      const data = origin[keyNm] ? origin[keyNm][rowNameIdx] : '0';
-      result[keyIdx].push(data || '0');
+      const data =
+        origin[keyNm] && rowNameIdx > -1 ? origin[keyNm][rowNameIdx] : '0';
+      result[keyIdx].push(data);
     });
   });
 
   return result;
 };
-const splitWithTrim = (d) => {
-  if (typeof d !== 'string') {
-    console.warn(d);
-    return [];
-  }
-  if (d) {
-    return d.split(',').map((str) => str.trim());
-  }
-  return [];
-};
 
-export default function PivotTable({ tableData = {} }) {
+export default function PivotTable({ tableData }) {
   const {
     tableRowIndexPerWeek,
     tableRowsLabel: rowsStr,
     tableColumnsLabel: columnsStr,
   } = useSelector((state) => state.contents);
-  // const { columnsLabel: columnsStr, rowsLabel: rowsStr } = table;
 
-  const rowsLabel = splitWithTrim(rowsStr);
-  const columnsLabel = splitWithTrim(columnsStr);
-  // const hasStaticRowsLabel = rowsLabel.length > 0;
-  // const tableDataRows = tableSetList.map((data) => data.defaultRows);
-  // const rowsMap = findRowIdx(rowsLabel, tableDataRows);
-
+  const rowsLabel = splitCommaWithTrim(rowsStr);
+  const columnsLabel = splitCommaWithTrim(columnsStr);
   const pivotData = pivot(tableRowIndexPerWeek, tableData);
 
-  return columnsLabel && tableData ? (
+  return columnsLabel ? (
     <table style={styles.table}>
       <thead>
         <tr>
@@ -137,3 +126,7 @@ export default function PivotTable({ tableData = {} }) {
     ''
   );
 }
+
+PivotTable.propTypes = {
+  tableData: PropTypes.object.isRequired,
+};

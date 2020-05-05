@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Button from '@material-ui/core/Button';
 
 function clickButton(e, targetId) {
@@ -34,3 +36,7 @@ export default function CopyButton({ targetId }) {
     </Button>
   );
 }
+
+CopyButton.propTypes = {
+  targetId: PropTypes.string.isRequired,
+};

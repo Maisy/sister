@@ -12,14 +12,14 @@ const initialState = {
 };
 export default handleActions(
   {
-    [ERROR_TRUE]: (state, action) =>
-      produce(state, draft => {
+    [ERROR_TRUE]: (state) =>
+      produce(state, (draft) => {
         draft.error = true;
       }),
-    [ERROR_FALSE]: (state, action) =>
-      produce(state, draft => {
+    [ERROR_FALSE]: (state) =>
+      produce(state, (draft) => {
         draft.error = false;
       }),
   },
-  initialState
+  initialState,
 );

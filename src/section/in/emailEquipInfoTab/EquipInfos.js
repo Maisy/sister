@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import InputText from '../InputText';
 import { makeStyles } from '@material-ui/core';
@@ -51,5 +52,9 @@ function EquipInfos({ onChanged }) {
     </div>
   );
 }
+
+EquipInfos.propTypes = {
+  onChanged: PropTypes.func.isRequired,
+};
 
 export default React.memo(EquipInfos);

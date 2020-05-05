@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
@@ -7,7 +9,7 @@ import { ContentsActions } from '../store/modules/contents';
 import { StaticActions } from '../store/modules/basicInfos';
 import { loadJsonFile } from '../utils/file';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     display: 'flex',
     alignItems: 'center',
@@ -19,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     marginRight: 8,
   },
-}));
+});
 
 function ImportButton({ label = 'Import' }) {
   const dispatch = useDispatch();
@@ -61,5 +63,9 @@ function ImportButton({ label = 'Import' }) {
     </div>
   );
 }
+
+ImportButton.propTypes = {
+  label: PropTypes.string,
+};
 
 export default React.memo(ImportButton);

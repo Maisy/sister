@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     margin: '20px 0 20px 0',
     textAlign: 'left',
   },
-}));
+});
 
-const splitTextNewLine = function(data = '') {
+const splitTextNewLine = function (data = '') {
   return data.split('\n').map((line, idx) => {
     return (
       <span key={idx}>
@@ -24,3 +26,7 @@ export default function ViewText({ data }) {
 
   return <div className={classes.root}>{splitTextNewLine(data)}</div>;
 }
+
+ViewText.propTypes = {
+  data: PropTypes.string.isRequired,
+};

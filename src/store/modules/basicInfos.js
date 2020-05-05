@@ -32,7 +32,7 @@ export default handleActions(
         draft.equipColumns = data.equip_info_columns;
       });
     },
-    [EXPORT_EMAIL_DATA]: (state, action) =>
+    [EXPORT_EMAIL_DATA]: (state) =>
       produce(state, (draft) => {
         draft.fileData = {
           email: draft.userEmails,

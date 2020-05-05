@@ -6,7 +6,7 @@ import TemplateTab from './templateTab';
 import SourceTab from './sourceTab';
 import EmailEquipInfoTab from './emailEquipInfoTab';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
