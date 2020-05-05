@@ -1,14 +1,13 @@
 import Sample from '../../resource/sample';
 import { createAction, handleActions } from 'redux-actions';
 import produce from 'immer';
+import { splitCommaWithTrim } from '../../utils/string';
 
-const SET_BASIC_INFOS = 'static/SET_BASIC_INFOS';
 const GET_RECEIVER = 'static/GET_RECEIVER';
 const IMPORT_EMAIL_DATA = 'static/IMPORT_EMAIL_DATA';
 const EXPORT_EMAIL_DATA = 'static/EXPORT_EMAIL_DATA';
 
 export const StaticActions = {
-  setBasicInfo: createAction(SET_BASIC_INFOS, (data) => data),
   getReceiver: createAction(GET_RECEIVER),
   importEmailData: createAction(IMPORT_EMAIL_DATA),
   exportEmailData: createAction(EXPORT_EMAIL_DATA),
@@ -25,21 +24,6 @@ const initialState = {
 //reducer: action, state를 받아서 새로운 상태를 리턴하는 애
 export default handleActions(
   {
-    // [SET_BASIC_INFOS]: (state, action) => {
-    //   const { userEmails, equipColumns, equipInfos } = action.payload;
-    //   return produce(state, (draft) => {
-    //     if (userEmails) {
-    //       draft.userEmails = userEmails;
-    //     }
-    //     if (equipColumns) {
-    //       draft.equipColumns = equipColumns;
-    //     }
-    //     if (equipInfos) {
-    //       draft.equipInfos = equipInfos;
-    //     }
-    //   });
-    // },
-
     [IMPORT_EMAIL_DATA]: (state, action) => {
       const data = action.payload;
       return produce(state, (draft) => {
@@ -63,23 +47,21 @@ export default handleActions(
         userEmails = state.userEmails,
       } = action.payload;
 
-      const userMailMap = {};
-      userEmails.split('\n').forEach((data) => {
-        const userInfo = data.split(',');
-        userMailMap[userInfo[0].trim()] = userInfo[1].trim();
-      });
-      const getUserMails = (id, ...nameList) => {
-        return nameList.map((name) => userMailMap[name.trim()] || '');
-      };
-      const equipReceiverMap = {};
-      equipInfos.split('\n').forEach((info) => {
-        const infoObj = info.split(',');
-        equipReceiverMap[infoObj[0].trim()] = getUserMails(...infoObj);
-      });
+      const userMailMap = userEmails.split('\n').reduce((resultMap, data) => {
+        const userInfo = splitCommaWithTrim(data);
+        resultMap[userInfo[0]] = userInfo[1];
+        return resultMap;
+      }, {});
+
+      const receiver = equipInfos.split('\n').reduce((resultMap, info) => {
+        const [equipId, ...owners] = splitCommaWithTrim(info);
+        resultMap[equipId] = owners.map((name) => userMailMap[name] || '');
+        return resultMap;
+      }, {});
 
       return {
         ...state,
-        receiver: equipReceiverMap,
+        receiver,
       };
     },
   },

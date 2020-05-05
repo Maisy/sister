@@ -16,8 +16,8 @@ const useStyle = makeStyles((theme) => ({
 export default function TableData({
   // dataIdx,
   name,
-  defaultData = [],
-  defaultRows = [],
+  defaultData,
+  defaultRows,
   setTableRows,
   setTableData,
   deleteCallback,

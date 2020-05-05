@@ -7,8 +7,8 @@ function TableDataList({ value: dataList, onChanged: setDataList }) {
     setDataList(
       dataList.concat({
         id: dataList.length,
-        defaultData: [],
-        defaultRows: [],
+        defaultData: '',
+        defaultRows: '',
       }),
     );
   };

@@ -1,9 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import produce from 'immer';
 import Sample from '../../resource/sample';
-
-const SET_TEMPLATE = 'template/SET_TEMPLATE';
-const SET_TABLE_DATA_SETS = 'source/SET_TABLE_DATA_SETS';
+import { splitCommaWithTrim } from '../../utils/string';
 
 const IMPORT_CONTENTS_DATA = 'data/IMPORT_CONTENTS_DATA';
 const EXPORT_CONTENTS_DATA = 'data/EXPORT_CONTENTS_DATA';
@@ -12,9 +10,6 @@ const PARSE_DATA = 'PARSE_DATA';
 
 // **** 액션 생섬함수 정의
 export const ContentsActions = {
-  setTemplate: createAction(SET_TEMPLATE, (data) => data),
-  setTableDataSet: createAction(SET_TABLE_DATA_SETS, (list) => list),
-
   importContentsData: createAction(IMPORT_CONTENTS_DATA, (data) => data),
   exportContentsData: createAction(EXPORT_CONTENTS_DATA, (data) => data),
 
@@ -56,18 +51,7 @@ const initialState = {
   fileData: {},
 };
 
-const splitWithTrim = (d) => {
-  if (typeof d !== 'string') {
-    console.warn(d);
-    return [];
-  }
-  if (d) {
-    return d.split(',').map((str) => str.trim());
-  }
-  return [];
-};
-
-const parseText = (template, variables, row) => {
+const parseVariable = (template, variables, row) => {
   const data = row.split(',');
   if (!template || data.length === 0) {
     return 'error';
@@ -85,11 +69,13 @@ const parseText = (template, variables, row) => {
 
 const findRowIndexPerWeek = (templateRowsLabel, dataRowsLabel) => {
   if (!Array.isArray(dataRowsLabel)) {
-    console.warn(dataRowsLabel);
+    console.warn('data rows label is empty', dataRowsLabel);
     return templateRowsLabel;
   }
   return dataRowsLabel.map((weekColumnList) =>
-    templateRowsLabel.map((row) => splitWithTrim(weekColumnList).indexOf(row)),
+    templateRowsLabel.map((row) =>
+      splitCommaWithTrim(weekColumnList).indexOf(row),
+    ),
   );
 };
 
@@ -140,18 +126,18 @@ const getTableDataPerMachine = (tableSetList) => {
       // MBA310, MBA311, ..
       let machineList; // = splitWithTrim(rows[0]);
       const weekKey = `week${weekIdx + 1}`;
-      lastWeekKey = `week${weekTotal.length}`;
+      lastWeekKey = `week${tableSetList.length}`;
 
       const machineData = rows.reduce((result, row, rowIdx) => {
         if (rowIdx === 0) {
-          machineList = splitWithTrim(row);
+          machineList = splitCommaWithTrim(row);
           machineList.forEach((machineId) => {
             result[machineId] = {
               [weekKey]: [],
             };
           });
         } else {
-          splitWithTrim(row).forEach((col, colIdx) => {
+          splitCommaWithTrim(row).forEach((col, colIdx) => {
             const machineId = machineList[colIdx];
             result[machineId][weekKey].push(col);
           });
@@ -185,7 +171,6 @@ export default handleActions(
   {
     [IMPORT_CONTENTS_DATA]: (state, action) => {
       const data = action.payload;
-      // console.log(data);
       return produce(state, (draft) => {
         const {
           pre_text,
@@ -261,8 +246,9 @@ export default handleActions(
       } = { ...state, ...inputData };
 
       const tableDataRows = tableSetList.map((data) => data.defaultRows);
+
       const tableRowIndexPerWeek = findRowIndexPerWeek(
-        splitWithTrim(tableRowsLabel),
+        splitCommaWithTrim(tableRowsLabel),
         tableDataRows,
       );
 
@@ -280,6 +266,7 @@ export default handleActions(
       };
 
       return produce(state, (draft) => {
+        draft.tableSetList = tableSetList;
         // use in pivot
         draft.tableRowsLabel = tableRowsLabel;
         draft.tableColumnsLabel = tableColumnsLabel;
@@ -290,8 +277,8 @@ export default handleActions(
           return {
             shouldSend: Boolean(shouldSendMailMap[mailKey]),
             emailId: getEmailId(data), //machine ID
-            preText: parseText(preTextSchema, variableList, data),
-            postText: parseText(postTextSchema, variableList, data),
+            preText: parseVariable(preTextSchema, variableList, data),
+            postText: parseVariable(postTextSchema, variableList, data),
             tableData: tableDataPerKey[mailKey],
           };
         });
