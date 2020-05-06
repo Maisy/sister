@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useSelector } from 'react-redux';
+import { splitCommaWithTrim } from '../../utils/string';
+
 const styles = {
   table: {
     margin: '20px 0',
@@ -33,9 +36,48 @@ const styles = {
   },
 };
 
-export default function ViewTable({ columnsLabel, rowsLabel, data }) {
-  const hasStaticRowsLabel = rowsLabel.length > 0;
-  return columnsLabel && data ? (
+const pivot = (rowsLabel, origin) => {
+  const result = [];
+  if (rowsLabel.length === 0) {
+    console.log('rows label is empty.');
+    Object.keys(origin).forEach((dataKey) => {
+      result.push(origin[dataKey]);
+    });
+    return result;
+  }
+
+  rowsLabel.forEach((weekColumnList, weekIdx) => {
+    const keyNm = `week${weekIdx + 1}`;
+
+    if (!Array.isArray(weekColumnList)) {
+      return;
+    }
+    weekColumnList.forEach((rowNameIdx, keyIdx) => {
+      if (weekIdx === 0) {
+        result[keyIdx] = [];
+      }
+
+      const data =
+        origin[keyNm] && rowNameIdx > -1 ? origin[keyNm][rowNameIdx] : '0';
+      result[keyIdx].push(data);
+    });
+  });
+
+  return result;
+};
+
+export default function PivotTable({ tableData }) {
+  const {
+    tableRowIndexPerWeek,
+    tableRowsLabel: rowsStr,
+    tableColumnsLabel: columnsStr,
+  } = useSelector((state) => state.contents);
+
+  const rowsLabel = splitCommaWithTrim(rowsStr);
+  const columnsLabel = splitCommaWithTrim(columnsStr);
+  const pivotData = pivot(tableRowIndexPerWeek, tableData);
+
+  return columnsLabel ? (
     <table style={styles.table}>
       <thead>
         <tr>
@@ -53,15 +95,13 @@ export default function ViewTable({ columnsLabel, rowsLabel, data }) {
         </tr>
       </thead>
       <tbody>
-        {data.split('\n').map((row, rowIdx) => {
+        {pivotData.map((row, rowIdx) => {
           return row ? (
-            <tr key={row + '' + rowIdx}>
-              {hasStaticRowsLabel && (
-                <td style={styles.th} key={rowsLabel + '' + rowIdx}>
-                  {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ''}
-                </td>
-              )}
-              {row.split(',').map((columnItem, colIdx, arr) => {
+            <tr key={rowIdx}>
+              <td style={styles.th} key={`${rowsLabel}${rowIdx}`}>
+                {rowsLabel[rowIdx] ? rowsLabel[rowIdx].trim() : ''}
+              </td>
+              {row.map((columnItem, colIdx, arr) => {
                 const tdStyle = ((index) => {
                   if (arr.length === index + 1)
                     return { ...styles.td, ...styles.emphasis };
@@ -70,11 +110,10 @@ export default function ViewTable({ columnsLabel, rowsLabel, data }) {
                   }
                 })(colIdx);
                 return (
-                  <td style={tdStyle} key={columnItem + '' + colIdx}>
+                  <td style={tdStyle} key={`${columnItem}${colIdx}`}>
                     {columnItem ? columnItem.trim() : ''}
                   </td>
                 );
-                // }
               })}
             </tr>
           ) : (
@@ -88,8 +127,6 @@ export default function ViewTable({ columnsLabel, rowsLabel, data }) {
   );
 }
 
-ViewTable.propTypes = {
-  columnsLabel: PropTypes.array.isRequired,
-  rowsLabel: PropTypes.array.isRequired,
-  data: PropTypes.string.isRequired,
+PivotTable.propTypes = {
+  tableData: PropTypes.object.isRequired,
 };

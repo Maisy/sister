@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import InputText from '../InputText';
 import TableDataList from './TableDataList';
+import { InputContext } from '../../InputContext';
 
-function SourceInput({ setInputData }) {
+function SourceInput() {
+  const { setInputData } = useContext(InputContext);
+
   const {
     variables: storeVariables,
     textData: storeTextData,
@@ -58,9 +60,5 @@ function SourceInput({ setInputData }) {
     </div>
   );
 }
-
-SourceInput.propTypes = {
-  setInputData: PropTypes.func.isRequired,
-};
 
 export default SourceInput;

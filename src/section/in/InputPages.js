@@ -41,13 +41,13 @@ export default function InputPages(props) {
         <Tab label="Source Data" className={classes.tab} {...a11yProps(2)} />
       </Tabs>
       <TabPanel value={tabIdx} index={0}>
-        <EmailEquipInfoTab {...props}></EmailEquipInfoTab>
+        <EmailEquipInfoTab {...props} />
       </TabPanel>
       <TabPanel value={tabIdx} index={1}>
-        <TemplateTab {...props}></TemplateTab>
+        <TemplateTab {...props} />
       </TabPanel>
       <TabPanel value={tabIdx} index={2}>
-        <SourceTab {...props}></SourceTab>
+        <SourceTab />
       </TabPanel>
     </div>
   );

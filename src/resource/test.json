@@ -17,5 +17,5 @@
 
   "source_data": "AA, maisy, 910105, mk, 010111222\nBB, jinmin, 111111, mj, 1234567777\nCC, dalkomm, 222222, coffee, 89898989",
 
-  "table_data": "AA, 아침담당자, true, 50, 1\nAA, 점심담당자, false, 14,0\nAA, 저녁담당자, false, 14,33\n\nBB, icecream, baskin, rabins,cdd\nBB, dunkin, donuts, strawberry,55\nBB, dam, sosagol, sundae,52\nBB, egg, drop, hungry,66\n\nCC, second1, false, 1,111\nCC, second2, false, 10,bbb"
+  "table_data_week1": "AA, 아침담당자, true, 50, 1\nAA, 점심담당자, false, 14,0\nAA, 저녁담당자, false, 14,33\n\nBB, icecream, baskin, rabins,cdd\nBB, dunkin, donuts, strawberry,55\nBB, dam, sosagol, sundae,52\nBB, egg, drop, hungry,66\n\nCC, second1, false, 1,111\nCC, second2, false, 10,bbb"
 }

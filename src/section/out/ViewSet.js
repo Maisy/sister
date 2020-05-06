@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ViewText from './ViewText';
-import PivotTable from './PivotTable';
+import ViewTable from './ViewTable';
 
 export default function ViewSet({ id, inputData }) {
   const { preText, tableData, postText } = inputData;
   return (
     <div id={id}>
       <ViewText data={preText}></ViewText>
-      {tableData && <PivotTable tableData={tableData}></PivotTable>}
+      {tableData && <ViewTable tableData={tableData}></ViewTable>}
       <ViewText data={postText}></ViewText>
     </div>
   );

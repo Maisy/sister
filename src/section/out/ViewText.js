@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -24,7 +25,9 @@ const splitTextNewLine = function (data = '') {
 export default function ViewText({ data }) {
   const classes = useStyles();
 
-  return <div className={classes.root}>{splitTextNewLine(data)}</div>;
+  return (
+    <Typography className={classes.root}>{splitTextNewLine(data)}</Typography>
+  );
 }
 
 ViewText.propTypes = {

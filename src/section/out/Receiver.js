@@ -13,4 +13,4 @@ Receiver.propTypes = {
   keyId: PropTypes.string.isRequired,
 };
 
-export default React.memo(Receiver);
+export default Receiver;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { useDispatch } from 'react-redux';
 
@@ -7,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { ContentsActions } from '../store/modules/contents';
 import { StaticActions } from '../store/modules/basicInfos';
+import { InputContext } from '../section/InputContext';
 
 const useStyle = makeStyles({
   root: {
@@ -18,27 +18,30 @@ const useStyle = makeStyles({
   },
 });
 
-function RunButton({ inputData: { equipInfos, userEmails, ...data } }) {
+function RunButton() {
   const classes = useStyle();
   const dispatch = useDispatch();
 
   return (
-    <Button
-      className={classes.root}
-      variant="contained"
-      // color="primary"
-      onClick={() => {
-        dispatch(StaticActions.getReceiver({ equipInfos, userEmails }));
-        dispatch(ContentsActions.parseData(data));
+    <InputContext.Consumer>
+      {({ inputData }) => {
+        const { equipInfos, userEmails, ...data } = inputData;
+        return (
+          <Button
+            className={classes.root}
+            variant="contained"
+            // color="primary"
+            onClick={() => {
+              dispatch(StaticActions.getReceiver({ equipInfos, userEmails }));
+              dispatch(ContentsActions.parseData(data));
+            }}
+          >
+            {'>>'}
+          </Button>
+        );
       }}
-    >
-      {'>>'}
-    </Button>
+    </InputContext.Consumer>
   );
 }
-
-RunButton.propTypes = {
-  inputData: PropTypes.object.isRequired,
-};
 
 export default RunButton;

@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { InputContext } from '../../InputContext';
+
 import UserEmails from './UserEmails';
 import EquipInfos from './EquipInfos';
 
@@ -22,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EmailEquipInfoTab({ setInputData }) {
+export default function EmailEquipInfoTab() {
   const classes = useStyles();
+  const { setInputData } = useContext(InputContext);
+
   const [expanded, setExpanded] = React.useState('panel1');
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -67,7 +70,3 @@ export default function EmailEquipInfoTab({ setInputData }) {
     </div>
   );
 }
-
-EmailEquipInfoTab.propTypes = {
-  setInputData: PropTypes.func.isRequired,
-};

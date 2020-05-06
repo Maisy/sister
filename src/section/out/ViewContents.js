@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
+  title: {
+    fontWeight: 600,
+    fontSize: 16,
+  },
   paper: {
     padding: theme.spacing(2),
     margin: 5,
@@ -30,26 +34,23 @@ function ViewContents() {
   const classes = useStyles();
   const dataList = useSelector((store) => store.contents.result);
 
-  return (
-    // dataList &&
-    dataList.map((data, idx) => {
-      return data ? (
-        <Paper
-          className={classNames(classes.paper, {
-            [classes.disabledPaper]: !data.shouldSend,
-          })}
-          key={idx}
-        >
-          <ViewText data={data.emailId}></ViewText>
-          <Receiver keyId={data.emailId}></Receiver>
-          <CopyButton targetId={`contents${idx + 1}`}></CopyButton>
-          <ViewSet id={`contents${idx + 1}`} inputData={data}></ViewSet>
-        </Paper>
-      ) : (
-        ''
-      );
-    })
-  );
+  return dataList.map((data, idx) => {
+    return data ? (
+      <Paper
+        className={classNames(classes.paper, {
+          [classes.disabledPaper]: !data.shouldSend,
+        })}
+        key={idx}
+      >
+        <ViewText className={classes.title} data={data.emailId}></ViewText>
+        <Receiver keyId={data.emailId}></Receiver>
+        <CopyButton targetId={`contents${idx + 1}`}></CopyButton>
+        <ViewSet id={`contents${idx + 1}`} inputData={data}></ViewSet>
+      </Paper>
+    ) : (
+      ''
+    );
+  });
 }
 
-export default ViewContents;
+export default React.memo(ViewContents);

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-
+import { InputContext } from '../../InputContext';
 import InputText from '../InputText';
 
-function Template({ setInputData }) {
+function Template() {
+  const { setInputData } = useContext(InputContext);
+
   const {
     preTextSchema,
     postTextSchema,
@@ -71,9 +72,5 @@ function Template({ setInputData }) {
     </div>
   );
 }
-
-Template.propTypes = {
-  setInputData: PropTypes.func.isRequired,
-};
 
 export default React.memo(Template);
